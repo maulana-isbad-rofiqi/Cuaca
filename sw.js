@@ -1,8 +1,10 @@
-const CACHE_NAME = 'cuaca-app-v1';
+const CACHE_NAME = 'cuaca-app-v2';
 const urlsToCache = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+  'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap'
 ];
 
 // Install Service Worker
@@ -15,16 +17,17 @@ self.addEventListener('install', event => {
   );
 });
 
-// Fetch Data (Network First, lalu Cache jika offline)
+// Fetch Assets
 self.addEventListener('fetch', event => {
   event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request);
-    })
+    fetch(event.request)
+      .catch(() => {
+        return caches.match(event.request);
+      })
   );
 });
 
-// Update Service Worker
+// Activate & Cleanup Old Cache
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
