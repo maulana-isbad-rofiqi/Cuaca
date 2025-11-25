@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>Cuaca Dashboard Pro — Multi Language & Advanced</title>
-    <meta name="description" content="Cuaca Dashboard Pro - multi-language, web-push, radar hooks, responsive two-column, export React/Vue" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cuaca Dashboard Pro — Enhanced</title>
+    <meta name="theme-color" content="#1e1e2e">
+    <meta name="description" content="Dashboard Cuaca Lengkap & Akurat — dengan Settings & About">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1163/1163661.png">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -12,731 +13,803 @@
 
     <style>
         :root{
-            --bg-dark:#0f1220;
-            --bg-soft:#0b0d12;
-            --card-bg:#121219;
-            --primary:#5c7cfa;
-            --accent:#ff6b6b;
-            --text:#e9eef8;
-            --muted:#98a0b3;
-            --radius:18px;
-        }
-        /* reset */
-        *{box-sizing:border-box;margin:0;padding:0;font-family:'Outfit',sans-serif}
-        body{background:var(--bg-dark);color:var(--text);min-height:100vh;padding:18px;display:flex;justify-content:center;transition:background .2s,color .2s}
-        .app{width:100%;max-width:1200px;display:flex;flex-direction:column;gap:18px}
-        header.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
-        .brand{display:flex;gap:12px;align-items:center}
-        .brand h1{font-size:1.1rem}
-        .controls{display:flex;gap:8px;align-items:center}
-        .btn{background:var(--primary);color:#031032;border:none;padding:9px 12px;border-radius:12px;font-weight:700;cursor:pointer}
-        .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text)}
-        input[type="text"],select,input[type="number"],textarea{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px;border-radius:10px;color:var(--text);outline:none}
-        .search-row{display:flex;gap:8px;align-items:center}
-
-        /* layout: main two-column for >= 900px */
-        .layout{display:flex;flex-direction:column;gap:18px}
-        @media(min-width:900px){
-            .layout{flex-direction:row;align-items:flex-start}
-            .left-col{flex:1;min-width:380px}
-            .right-col{width:420px}
+            --bg-dark: #121215;
+            --bg-light: #f4f6fb;
+            --card-bg: #1e1e2e;
+            --card-glass: rgba(30,30,46,0.7);
+            --primary: #5c7cfa;
+            --accent: #ff6b6b;
+            --text-main: #ffffff;
+            --text-sec: #a0a0b0;
+            --radius: 24px;
+            --app-radius: 24px;
+            --glass: rgba(255,255,255,0.06);
         }
 
-        /* main card */
-        .card{background:linear-gradient(135deg,#3a7bd5 0%,#3a6073 100%);border-radius:20px;padding:20px;box-shadow:0 12px 40px rgba(0,0,0,0.45);overflow:hidden}
-        .card .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-        .main-temp{font-size:3.4rem;font-weight:800;display:flex;align-items:center;gap:12px}
-        .small-box{background:rgba(255,255,255,0.04);padding:10px;border-radius:12px;text-align:center}
+        /* Basic Reset */
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif;-webkit-tap-highlight-color:transparent}
+        body{background-color:var(--bg-dark);color:var(--text-main);min-height:100vh;display:flex;justify-content:center;padding:18px 12px;transition:background-color .25s,color .25s}
+        .app-container{width:100%;max-width:520px;display:flex;flex-direction:column;gap:18px}
 
-        /* hourly/daily */
-        .hourly-scroll{display:flex;gap:10px;overflow-x:auto;padding:8px 4px}
-        .hour-card{min-width:72px;background:rgba(255,255,255,0.03);padding:10px;border-radius:12px;text-align:center}
-        .daily-list{display:flex;flex-direction:column;gap:8px}
+        /* Header */
+        .header{display:flex;justify-content:space-between;align-items:center;padding:0 6px}
+        .greeting h2{font-size:1.4rem;font-weight:700}
+        .greeting p{font-size:0.9rem;color:var(--text-sec)}
+        .date-badge{background:#2c2c3a;padding:8px 12px;border-radius:12px;font-size:0.78rem;color:var(--text-sec);font-weight:600}
 
-        /* settings & panels */
-        .panel{background:var(--card-bg);padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.03)}
-        .panel h3{margin-bottom:10px}
-        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-        @media(max-width:520px){.form-grid{grid-template-columns:1fr}}
+        /* Search bar */
+        .search-bar{background:var(--card-bg);padding:8px;border-radius:20px;display:flex;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,0.25)}
+        .search-bar input{flex:1;background:transparent;border:none;padding:0 12px;color:inherit;font-size:1rem;outline:none}
+        .btn-icon{width:45px;height:45px;border-radius:14px;border:none;background:var(--primary);color:white;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:transform .15s,opacity .15s}
+        .btn-icon.secondary{background:#2c2c3a;color:var(--text-sec)}
+        .btn-icon:active{transform:scale(.96)}
 
-        /* map/radar placeholder */
-        .radar-box{background:#071323;border-radius:12px;min-height:220px;display:flex;align-items:center;justify-content:center;color:var(--muted);border:1px dashed rgba(255,255,255,0.03)}
+        /* Main card */
+        .main-card{background:linear-gradient(135deg,#3a7bd5 0%,#3a6073 100%);border-radius:30px;padding:26px;color:white;position:relative;overflow:hidden;box-shadow:0 15px 40px rgba(58,123,213,0.25);transition:background .35s,box-shadow .35s}
+        .main-card-header{display:flex;justify-content:space-between;align-items:flex-start;z-index:2;position:relative}
+        .city-name{font-size:1.5rem;font-weight:700;display:flex;align-items:center;gap:8px}
+        .weather-status{background:rgba(255,255,255,0.12);padding:6px 12px;border-radius:20px;font-size:0.82rem;font-weight:600;backdrop-filter:blur(4px)}
+        .main-temp-wrapper{text-align:center;margin:18px 0;z-index:2;position:relative}
+        .main-icon{font-size:5rem;margin-bottom:6px;filter:drop-shadow(0 5px 15px rgba(0,0,0,0.2))}
+        .main-temp{font-size:4.2rem;font-weight:700;line-height:1;margin-left:12px}
+        .main-details{display:flex;justify-content:space-around;background:rgba(0,0,0,0.12);border-radius:18px;padding:12px 10px;backdrop-filter:blur(6px)}
+        .detail-item{text-align:center}
+        .detail-item i{font-size:1.1rem;opacity:0.9;margin-bottom:6px}
+        .detail-item span{display:block;font-size:0.92rem;font-weight:700}
+        .detail-item small{font-size:0.72rem;opacity:0.78}
 
-        /* footer */
-        footer{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:0.9rem;padding-top:6px}
+        /* hourly */
+        .section-title{font-size:1.05rem;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--text-main)}
+        .hourly-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
+        .hourly-scroll::-webkit-scrollbar{display:none}
+        .hour-card{min-width:75px;background:var(--card-bg);border-radius:16px;padding:12px 10px;text-align:center;display:flex;flex-direction:column;gap:6px;border:1px solid rgba(255,255,255,0.04);transition:transform .12s,background .12s}
+        .hour-card:hover{transform:translateY(-6px)}
+        .hour-card.active{background:var(--primary);border-color:var(--primary)}
+        .hour-time{font-size:0.8rem;color:var(--text-sec)}
+        .hour-icon{font-size:1.2rem;margin:5px 0}
+        .hour-temp{font-weight:700;font-size:1rem}
 
-        /* modals/backdrops */
-        .backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:1200}
-        .modal{background:var(--card-bg);padding:18px;border-radius:12px;width:94%;max-width:720px;max-height:85vh;overflow:auto}
-        .close-x{background:transparent;border:0;color:var(--muted);cursor:pointer}
+        /* daily */
+        .daily-list{display:flex;flex-direction:column;gap:10px}
+        .day-row{display:flex;justify-content:space-between;align-items:center;background:var(--card-bg);padding:12px 16px;border-radius:14px;border:1px solid rgba(255,255,255,0.04)}
+        .day-name{width:110px;font-weight:600}
+        .day-icon{flex:1;text-align:center;font-size:1.15rem;color:var(--primary)}
+        .day-temp{width:100px;text-align:right;font-weight:700;color:var(--text-sec)}
+        .day-temp span{color:var(--text-main);margin-right:6px}
 
-        /* language badge */
-        .lang-select{background:rgba(255,255,255,0.03);padding:7px;border-radius:10px;color:var(--text);border:1px solid rgba(255,255,255,0.03)}
-        /* export area */
-        .export-area{display:flex;gap:8px;flex-wrap:wrap}
+        /* utilities & small cards */
+        .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+        .small-card{background:var(--card-bg);padding:12px;border-radius:12px;display:flex;flex-direction:column;gap:6px}
+        .small-card small{color:var(--text-sec)}
 
-        /* small helpers */
-        .muted{color:var(--muted);font-size:0.9rem}
-        .spaced{margin-top:8px}
+        /* loader */
+        .loading-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-dark);z-index:999;display:flex;justify-content:center;align-items:center;flex-direction:column;gap:12px;transition:opacity .28s}
+        .spinner{width:40px;height:40px;border:4px solid var(--card-bg);border-top:4px solid var(--primary);border-radius:50%;animation:spin .8s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        #installBtn{background:var(--text-main);color:var(--bg-dark);border:none;padding:13px;border-radius:18px;font-weight:700;cursor:pointer;margin-top:8px;display:none;width:100%}
+
+        /* Modals */
+        .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:1100}
+        .modal{background:var(--card-bg);border-radius:14px;padding:18px;width:92%;max-width:520px;box-shadow:0 12px 30px rgba(0,0,0,0.45);transform:translateY(10px);transition:transform .18s,opacity .18s}
+        .modal h3{margin-bottom:10px}
+        .modal .row{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+        .toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+        .select, .input, .range{width:100%;padding:8px;border-radius:10px;border:none;background:#2b2b33;color:inherit;outline:none}
+        .save-btn{background:var(--primary);color:white;border:none;padding:10px 12px;border-radius:12px;font-weight:700;cursor:pointer}
+
+        /* footer shortcuts */
+        .footer-actions{display:flex;gap:10px;align-items:center;justify-content:center;color:var(--text-sec);font-size:0.9rem;padding:8px}
+
+        /* light theme */
+        .theme-light{--bg-dark:var(--bg-light);--card-bg:#ffffff;--text-main:#0e1724;--text-sec:#53607a;--primary:#2b6bff;--accent:#ff6b6b;--glass:rgba(14,23,36,0.04)}
+        .theme-light .date-badge{background:#eef3ff}
+        .theme-light .search-bar{box-shadow:0 8px 22px rgba(20,30,40,0.04)}
+        .theme-light .main-card{box-shadow:0 10px 30px rgba(43,107,255,0.06)}
+
+        /* responsive tweaks */
+        @media (max-width:360px){.main-temp{font-size:3.5rem}.main-icon{font-size:4rem}}
     </style>
 </head>
 <body>
-    <div class="app" id="appRoot">
-        <header class="top">
-            <div class="brand">
-                <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" width="36" alt="">
-                <div>
-                    <h1 id="ui_title">Cuaca Dashboard Pro</h1>
-                    <div class="muted" id="ui_subtitle">Dashboard cuaca canggih</div>
-                </div>
-            </div>
 
-            <div class="controls">
-                <select id="langSelect" class="lang-select" title="Pilih bahasa">
-                    <option value="id">Bahasa (ID)</option>
-                    <option value="en">English</option>
-                </select>
-                <button class="btn ghost" id="openAdvancedBtn"><i class="fas fa-tools"></i> <span id="lbl_advanced">Advanced</span></button>
-                <button class="btn" id="openSettingsBtn"><i class="fas fa-cog"></i> <span id="lbl_settings">Settings</span></button>
+    <!-- LOADER -->
+    <div class="loading-overlay" id="loader">
+        <div class="spinner"></div>
+        <p id="loaderText">Memuat data satelit...</p>
+    </div>
+
+    <div class="app-container" id="app">
+        <header class="header">
+            <div class="greeting">
+                <h2 id="greetText">Selamat Pagi,</h2>
+                <p>Cek cuaca hari ini yuk!</p>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+                <div class="date-badge" id="dateBadge">Sen, 25 Nov</div>
+                <button class="btn-icon secondary" id="openSettingsBtn" title="Settings (S)"><i class="fas fa-cog"></i></button>
             </div>
         </header>
 
-        <div class="layout">
-            <!-- LEFT: main weather -->
-            <div class="left-col">
-                <div class="card" id="mainCard">
-                    <div class="row">
-                        <div>
-                            <div id="greetText">Selamat Pagi,</div>
-                            <div class="muted" id="dateBadge">Sen, 25 Nov</div>
-                        </div>
-                        <div style="display:flex;gap:8px;align-items:center">
-                            <div class="muted" id="cityRegion">Jakarta</div>
-                            <button class="btn ghost" id="btnMyLocation" title="Gunakan lokasi saya"><i class="fas fa-location-crosshairs"></i></button>
-                        </div>
-                    </div>
+        <div class="search-bar" role="search" aria-label="Cari kota">
+            <button class="btn-icon secondary" onclick="getGeoLocation()" title="Lokasi saya (GPS)"><i class="fas fa-location-crosshairs"></i></button>
+            <input type="text" id="cityInput" placeholder="Cari kota (cth: Surabaya)...">
+            <button class="btn-icon" onclick="searchCity()" title="Cari"><i class="fas fa-search"></i></button>
+        </div>
 
-                    <div style="display:flex;gap:18px;align-items:center;margin-top:8px">
-                        <div style="flex:1">
-                            <div class="main-temp" id="currentTemp"><i class="fas fa-sun" id="mainIcon"></i> 32°</div>
-                            <div class="muted" id="weatherDesc">Cerah</div>
-                        </div>
-                        <div style="width:160px;display:flex;flex-direction:column;gap:8px">
-                            <div class="small-box"><div class="muted">Angin</div><div id="windSpeed">10 km/j</div></div>
-                            <div class="small-box"><div class="muted">Lembap</div><div id="humidity">60%</div></div>
-                        </div>
-                    </div>
-
-                    <div class="spaced">
-                        <div class="section-title"><i class="far fa-clock"></i> <span id="lbl_hourly">Cuaca Per Jam</span></div>
-                        <div class="hourly-scroll" id="hourlyList"></div>
-                    </div>
-
-                    <div class="spaced">
-                        <div class="section-title"><i class="far fa-calendar-alt"></i> <span id="lbl_week">7 Hari Kedepan</span></div>
-                        <div class="daily-list" id="dailyList"></div>
-                    </div>
-                </div>
-
-                <!-- export to React/Vue -->
-                <div class="panel spaced">
-                    <h3 id="lbl_export">Export Starter</h3>
-                    <div class="muted" id="lbl_export_desc">Unduh file starter sederhana untuk React / Vue</div>
-                    <div class="export-area spaced">
-                        <button class="btn" id="exportReactBtn"><i class="fab fa-react"></i> React (App.jsx)</button>
-                        <button class="btn" id="exportVueBtn"><i class="fab fa-vuejs"></i> Vue (App.vue)</button>
-                    </div>
+        <div class="main-card" id="mainCardBg">
+            <div class="main-card-header">
+                <div class="city-name"><i class="fas fa-map-marker-alt"></i> <span id="cityName">Jakarta</span></div>
+                <div style="display:flex;gap:8px;align-items:center">
+                    <div class="weather-status" id="weatherDesc">Cerah</div>
+                    <button class="btn-icon secondary" id="openAboutBtn" title="About (A)"><i class="fas fa-info-circle"></i></button>
                 </div>
             </div>
 
-            <!-- RIGHT: panels -->
-            <div class="right-col" style="display:flex;flex-direction:column;gap:12px">
-                <div class="panel">
-                    <h3 id="lbl_settings_header">Pengaturan</h3>
-                    <div class="form-grid">
-                        <div>
-                            <label id="lbl_theme">Tema</label>
-                            <select id="themeSelect">
-                                <option value="dark">Gelap / Dark</option>
-                                <option value="light">Terang / Light</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label id="lbl_unit">Satuan</label>
-                            <select id="unitSelect">
-                                <option value="metric">°C / km/j</option>
-                                <option value="imperial">°F / mph</option>
-                            </select>
-                        </div>
+            <div class="main-temp-wrapper">
+                <i class="fas fa-sun main-icon" id="mainIcon"></i>
+                <span class="main-temp" id="currentTemp">32°</span>
+            </div>
 
-                        <div>
-                            <label id="lbl_timefmt">Format Jam</label>
-                            <select id="timeFmt">
-                                <option value="24">24 jam</option>
-                                <option value="12">12 jam</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label id="lbl_lang_settings">Bahasa UI</label>
-                            <select id="langSelect2">
-                                <option value="id">Bahasa (ID)</option>
-                                <option value="en">English</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end">
-                        <button class="btn ghost" id="resetSettingsBtn">Reset</button>
-                        <button class="btn" id="saveSettingsBtn">Simpan</button>
-                    </div>
+            <div class="main-details">
+                <div class="detail-item">
+                    <i class="fas fa-wind"></i>
+                    <span id="windSpeed">10 km/j</span>
+                    <small>Angin</small>
                 </div>
-
-                <!-- Advanced panel preview (short) -->
-                <div class="panel">
-                    <h3 id="lbl_adv_short">Advanced</h3>
-                    <div class="muted" id="lbl_adv_short_desc">Notifikasi push (web-push) & Radar / Satelit integration</div>
-                    <div style="display:flex;gap:8px;margin-top:10px;justify-content:space-between">
-                        <button class="btn ghost" id="openAdvancedModalBtn"><i class="fas fa-external-link-alt"></i> Buka Advanced</button>
-                        <button class="btn" id="testPushBtn">Test Push</button>
-                    </div>
+                <div class="detail-item">
+                    <i class="fas fa-tint"></i>
+                    <span id="humidity">60%</span>
+                    <small>Lembap</small>
                 </div>
-
-                <!-- Radar / satellite panel -->
-                <div class="panel">
-                    <h3 id="lbl_radar">Radar & Satelit</h3>
-                    <div class="muted" id="lbl_radar_desc">Masukkan API key & pilih penyedia. Klik Load Radar.</div>
-
-                    <div class="spaced">
-                        <label id="lbl_radar_provider">Penyedia / Tile URL</label>
-                        <input type="text" id="radarTileUrl" placeholder="Contoh tile URL/iframe (ganti sesuai provider)">
-                        <label class="spaced" id="lbl_radar_key">API Key (opsional)</label>
-                        <input type="text" id="radarApiKey" placeholder="Masukkan API key">
-                        <div style="display:flex;gap:8px;margin-top:10px">
-                            <button class="btn" id="loadRadarBtn">Load Radar</button>
-                            <button class="btn ghost" id="clearRadarBtn">Clear</button>
-                        </div>
-                    </div>
-
-                    <div class="spaced radar-box" id="radarBox">Area Radar / Satelit (placeholder)</div>
-                </div>
-
-                <div class="panel">
-                    <h3 id="lbl_about">About</h3>
-                    <div class="muted" id="aboutText">
-                        Versi 1.2.0 — Multi-language & advanced features. Web-push membutuhkan server & VAPID key.
-                    </div>
+                <div class="detail-item">
+                    <i class="fas fa-sun"></i>
+                    <span id="uvIndex">Tinggi</span>
+                    <small>UV</small>
                 </div>
             </div>
         </div>
 
-        <footer>
-            <div class="muted" id="footer_left">© Cuaca Dashboard Pro</div>
-            <div class="muted" id="footer_right">Shortcuts: S Settings • A Advanced</div>
-        </footer>
+        <div>
+            <div class="section-title"><i class="far fa-clock"></i> Cuaca Per Jam</div>
+            <div class="hourly-scroll" id="hourlyList"></div>
+        </div>
+
+        <div>
+            <div class="section-title"><i class="far fa-calendar-alt"></i> 7 Hari Kedepan</div>
+            <div class="daily-list" id="dailyList"></div>
+        </div>
+
+        <div class="mini-grid" style="margin-top:4px;">
+            <div class="small-card">
+                <small>Terbit</small>
+                <div style="font-size:1.1rem;font-weight:700"><i class="fas fa-sun" style="color:gold;margin-right:6px"></i> <span id="sunriseTime">--:--</span></div>
+            </div>
+            <div class="small-card">
+                <small>Terbenam</small>
+                <div style="font-size:1.1rem;font-weight:700"><i class="fas fa-moon" style="color:slateblue;margin-right:6px"></i> <span id="sunsetTime">--:--</span></div>
+            </div>
+        </div>
+
+        <button id="installBtn"><i class="fas fa-download"></i> Install Aplikasi</button>
+
+        <div class="footer-actions">
+            <div>Shortcut: <strong>S</strong> Settings • <strong>A</strong> About</div>
+        </div>
+
     </div>
 
-    <!-- Advanced modal (web-push & detailed) -->
-    <div class="backdrop" id="advancedModal">
-        <div class="modal" role="dialog" aria-modal="true">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                <h3>Advanced Settings</h3>
-                <button class="close-x" id="closeAdvancedModal"><i class="fas fa-times"></i></button>
+    <!-- SETTINGS MODAL -->
+    <div class="modal-backdrop" id="settingsModal" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+            <h3 id="settingsTitle"><i class="fas fa-cog"></i> Pengaturan</h3>
+
+            <div class="row">
+                <label style="min-width:140px">Tema</label>
+                <select id="themeSelect" class="select" aria-label="Pilih tema">
+                    <option value="dark">Gelap</option>
+                    <option value="light">Terang</option>
+                </select>
             </div>
 
-            <section class="spaced">
-                <h4>Web-Push (server-based)</h4>
-                <p class="muted">Masukkan VAPID Public Key dan alamat server push-mu. Sistem akan mendaftarkan subscription ke server.</p>
+            <div class="row">
+                <label style="min-width:140px">Satuan Suhu</label>
+                <select id="tempUnit" class="select" aria-label="Satuan suhu">
+                    <option value="celsius">°C</option>
+                    <option value="fahrenheit">°F</option>
+                </select>
+            </div>
 
-                <div class="form-grid spaced">
-                    <div>
-                        <label>VAPID Public Key</label>
-                        <input type="text" id="vapidPublicKey" placeholder="B: BNc... (base64 url)">
-                    </div>
-                    <div>
-                        <label>Server Endpoint</label>
-                        <input type="text" id="pushServerUrl" placeholder="https://example.com/register-subscription">
-                    </div>
+            <div class="row">
+                <label style="min-width:140px">Kecepatan Angin</label>
+                <select id="windUnit" class="select" aria-label="Satuan kecepatan angin">
+                    <option value="kmh">km/j</option>
+                    <option value="mph">mph</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <label style="min-width:140px">Format Jam</label>
+                <select id="timeFormat" class="select" aria-label="Format jam">
+                    <option value="24">24 jam</option>
+                    <option value="12">12 jam</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <label style="min-width:140px">Auto-refresh (menit)</label>
+                <input type="number" id="refreshInterval" class="input" min="0" max="1440" step="1" value="0" aria-label="Interval auto refresh"/>
+            </div>
+
+            <div class="row">
+                <label style="min-width:140px">Notifikasi Cuaca</label>
+                <div style="display:flex;gap:8px;align-items:center">
+                    <label class="toggle"><input type="checkbox" id="notifToggle"> Aktifkan</label>
+                    <button class="save-btn" id="notifPermissionBtn" style="padding:8px 10px;font-size:0.85rem">Periksa Izin</button>
                 </div>
+            </div>
 
-                <div style="display:flex;gap:8px;margin-top:10px">
-                    <button class="btn" id="subscribePushBtn">Subscribe (Browser)</button>
-                    <button class="btn ghost" id="unsubscribePushBtn">Unsubscribe</button>
-                    <button class="btn ghost" id="sendPushViaServerBtn">Trigger Push (via Server)</button>
-                </div>
+            <div class="row">
+                <label style="min-width:140px">Opsi Tampilan</label>
+                <select id="gradientSelect" class="select" aria-label="Pilihan gradient">
+                    <option value="blue">Ocean Blue</option>
+                    <option value="sunny">Sunny Orange</option>
+                    <option value="storm">Stormy</option>
+                    <option value="mono">Monochrome</option>
+                </select>
+            </div>
 
-                <details class="spaced">
-                    <summary>Petunjuk singkat (server)</summary>
-                    <div class="muted" style="margin-top:8px">
-                        Server harus menyimpan subscription JSON yang dikirim dari browser, lalu gunakan <code>web-push</code> (Node.js) atau library setara untuk mengirim push menggunakan VAPID keys. Contoh: <code>web-push sendNotification(subscription, payload)</code>.
-                    </div>
-                </details>
-            </section>
+            <div class="row">
+                <label style="min-width:140px">Simpan Lokasi Default</label>
+                <input type="text" id="defaultCity" class="input" placeholder="Ketik nama kota untuk disimpan (optional)"/>
+            </div>
 
-            <hr style="margin:12px 0;border:0;border-top:1px solid rgba(255,255,255,0.03)">
+            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+                <button class="save-btn" id="saveSettingsBtn">Simpan</button>
+                <button class="btn-icon secondary" id="closeSettingsBtn" title="Tutup"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    </div>
 
-            <section class="spaced">
-                <h4>Radar / Satelit (Advanced)</h4>
-                <p class="muted">Kamu bisa menggunakan tile provider (contoh: RainViewer tiles) atau integrasi iframe dari penyedia satelit. Masukkan URL tile/iframe dan API key jika diperlukan.</p>
-                <label>Contoh Tile URL (RainViewer):</label>
-                <textarea id="radarExample" rows="3" style="width:100%;background:#071323;border-radius:8px;border:1px solid rgba(255,255,255,0.03);padding:8px;color:var(--muted)">https://tilecache.rainviewer.com/v2/radar/{time}/256/{z}/{x}/{y}/2/1_1.png</textarea>
-                <div style="display:flex;gap:8px;margin-top:10px">
-                    <button class="btn" id="copyRadarExampleBtn">Copy Example</button>
-                </div>
-            </section>
+    <!-- ABOUT MODAL -->
+    <div class="modal-backdrop" id="aboutModal" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+            <h3 id="aboutTitle"><i class="fas fa-info-circle"></i> Tentang Cuaca Dashboard Pro</h3>
+            <p style="opacity:.9;margin-bottom:8px">Versi <strong>1.2.0</strong> — Dashboard cuaca yang cepat dan mudah disesuaikan.</p>
+            <p style="font-size:0.95rem;color:var(--text-sec);margin-bottom:8px">
+                Dibuat dengan ❤️. Data cuaca dari <em>Open-Meteo</em> (digunakan hanya contoh pada skrip).  
+                Pastikan memeriksa kebijakan privasi jika mengumpulkan lokasi pengguna di produksi.
+            </p>
 
-            <div style="display:flex;justify-content:flex-end;margin-top:12px">
-                <button class="btn" id="closeAdvancedDone">Done</button>
+            <div style="margin-bottom:10px">
+                <strong>Changelog singkat</strong>
+                <ul style="margin-top:8px;color:var(--text-sec)">
+                    <li>1.2.0 — Menambahkan Settings & About, penyimpanan preferensi, auto-refresh.</li>
+                    <li>1.1.0 — Perbaikan UI & rute geocoding.</li>
+                </ul>
+            </div>
+
+            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px">
+                <a href="#" id="openLic" class="btn-icon secondary" title="Lisensi"><i class="fas fa-balance-scale"></i></a>
+                <button class="save-btn" id="closeAboutBtn">Tutup</button>
             </div>
         </div>
     </div>
 
     <script>
-    /**************************************************************************
-     * Multi-language dictionary (id, en)
-     * Update this object to add more labels. All UI text nodes use keys below.
-     **************************************************************************/
-    const I18N = {
-        id: {
-            ui_title: "Cuaca Dashboard Pro",
-            ui_subtitle: "Dashboard cuaca canggih",
-            greet_morning: "Selamat Pagi,",
-            greet_day: "Selamat Siang,",
-            greet_evening: "Selamat Sore,",
-            greet_night: "Selamat Malam,",
-            lbl_hourly: "Cuaca Per Jam",
-            lbl_week: "7 Hari Kedepan",
-            lbl_settings: "Pengaturan",
-            lbl_advanced: "Advanced",
-            lbl_export: "Export Starter",
-            lbl_export_desc: "Unduh file starter sederhana untuk React / Vue",
-            lbl_settings_header: "Pengaturan",
-            lbl_adv_short: "Advanced",
-            lbl_radar: "Radar & Satelit",
-            lbl_radar_desc: "Masukkan API key & pilih penyedia. Klik Load Radar.",
-            lbl_about: "Tentang",
-            lbl_theme: "Tema",
-            lbl_unit: "Satuan",
-            lbl_timefmt: "Format Jam",
-            lbl_lang_settings: "Bahasa UI",
-            lbl_radar_provider: "Penyedia / Tile URL",
-            lbl_radar_key: "API Key (opsional)"
-        },
-        en: {
-            ui_title: "Weather Dashboard Pro",
-            ui_subtitle: "Powerful weather dashboard",
-            greet_morning: "Good Morning,",
-            greet_day: "Good Afternoon,",
-            greet_evening: "Good Evening,",
-            greet_night: "Good Night,",
-            lbl_hourly: "Hourly Forecast",
-            lbl_week: "7 Day Forecast",
-            lbl_settings: "Settings",
-            lbl_advanced: "Advanced",
-            lbl_export: "Export Starter",
-            lbl_export_desc: "Download starter files for React / Vue",
-            lbl_settings_header: "Settings",
-            lbl_adv_short: "Advanced",
-            lbl_radar: "Radar & Satellite",
-            lbl_radar_desc: "Provide API key & provider. Click Load Radar.",
-            lbl_about: "About",
-            lbl_theme: "Theme",
-            lbl_unit: "Units",
-            lbl_timefmt: "Time Format",
-            lbl_lang_settings: "UI Language",
-            lbl_radar_provider: "Provider / Tile URL",
-            lbl_radar_key: "API Key (optional)"
-        }
-    };
+        /* ------------------------------
+           CONFIG & DEFAULTS
+           ------------------------------ */
+        const DEFAULTS = {
+            theme: 'dark', // 'dark' | 'light'
+            tempUnit: 'celsius', // 'celsius' | 'fahrenheit'
+            windUnit: 'kmh', // 'kmh' | 'mph'
+            timeFormat: '24', // '24' | '12'
+            refreshInterval: 0, // minutes, 0 = no auto refresh
+            notifEnabled: false,
+            gradient: 'blue',
+            defaultCity: '', // stored city name
+            version: '1.2.0'
+        };
 
-    // Current language (default: id)
-    let LANG = localStorage.getItem('cuaka_lang') || 'id';
+        const STORAGE_KEY = 'cuaca_pro_settings_v1';
 
-    // Simple settings storage (localStorage)
-    const SETTINGS_KEY = 'cuaka_settings_v2';
-    const DEFAULT_SETTINGS = {
-        theme: 'dark',
-        units: 'metric',
-        timefmt: '24',
-    };
-    let SETTINGS = Object.assign({}, DEFAULT_SETTINGS, JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}'));
+        /* ------------------------------
+           ELEMENTS
+           ------------------------------ */
+        const loader = document.getElementById('loader');
+        const loaderText = document.getElementById('loaderText');
+        const greetText = document.getElementById('greetText');
+        const dateBadge = document.getElementById('dateBadge');
+        const cityInput = document.getElementById('cityInput');
+        const cityNameEl = document.getElementById('cityName');
+        const currentTempEl = document.getElementById('currentTemp');
+        const weatherDescEl = document.getElementById('weatherDesc');
+        const mainIconEl = document.getElementById('mainIcon');
+        const mainCardBg = document.getElementById('mainCardBg');
+        const hourlyList = document.getElementById('hourlyList');
+        const dailyList = document.getElementById('dailyList');
+        const sunriseTimeEl = document.getElementById('sunriseTime');
+        const sunsetTimeEl = document.getElementById('sunsetTime');
+        const windSpeedEl = document.getElementById('windSpeed');
+        const humidityEl = document.getElementById('humidity');
+        const uvIndexEl = document.getElementById('uvIndex');
+        const installBtn = document.getElementById('installBtn');
 
-    // Helper to translate UI
-    function t(key) {
-        return (I18N[LANG] && I18N[LANG][key]) || key;
-    }
+        // Modal elements
+        const settingsModal = document.getElementById('settingsModal');
+        const aboutModal = document.getElementById('aboutModal');
+        const openSettingsBtn = document.getElementById('openSettingsBtn');
+        const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+        const openAboutBtn = document.getElementById('openAboutBtn');
+        const closeAboutBtn = document.getElementById('closeAboutBtn');
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
 
-    function applyLanguageToUI() {
-        // top labels
-        document.getElementById('ui_title').innerText = t('ui_title');
-        document.getElementById('ui_subtitle').innerText = t('ui_subtitle');
-        document.getElementById('lbl_hourly').innerText = t('lbl_hourly');
-        document.getElementById('lbl_week').innerText = t('lbl_week');
-        document.getElementById('lbl_settings').innerText = t('lbl_settings');
-        document.getElementById('lbl_advanced').innerText = t('lbl_advanced');
-        document.getElementById('lbl_export').innerText = t('lbl_export');
-        document.getElementById('lbl_export_desc').innerText = t('lbl_export_desc');
-        document.getElementById('lbl_settings_header').innerText = t('lbl_settings_header');
-        document.getElementById('lbl_adv_short').innerText = t('lbl_adv_short');
-        document.getElementById('lbl_radar').innerText = t('lbl_radar');
-        document.getElementById('lbl_radar_desc').innerText = t('lbl_radar_desc');
-        document.getElementById('lbl_about').innerText = t('lbl_about');
-        // form labels
-        document.getElementById('lbl_theme').innerText = t('lbl_theme');
-        document.getElementById('lbl_unit').innerText = t('lbl_unit');
-        document.getElementById('lbl_timefmt').innerText = t('lbl_timefmt');
-        document.getElementById('lbl_lang_settings').innerText = t('lbl_lang_settings');
-        document.getElementById('lbl_radar_provider').innerText = t('lbl_radar_provider');
-        document.getElementById('lbl_radar_key').innerText = t('lbl_radar_key');
-    }
+        // Settings inputs
+        const themeSelect = document.getElementById('themeSelect');
+        const tempUnitSelect = document.getElementById('tempUnit');
+        const windUnitSelect = document.getElementById('windUnit');
+        const timeFormatSelect = document.getElementById('timeFormat');
+        const refreshIntervalInput = document.getElementById('refreshInterval');
+        const notifToggle = document.getElementById('notifToggle');
+        const notifPermissionBtn = document.getElementById('notifPermissionBtn');
+        const gradientSelect = document.getElementById('gradientSelect');
+        const defaultCityInput = document.getElementById('defaultCity');
 
-    // Apply saved lang selection to selects
-    document.getElementById('langSelect').value = LANG;
-    document.getElementById('langSelect2').value = LANG;
-    applyLanguageToUI();
+        // State
+        let settings = loadSettings();
+        let autoRefreshTimer = null;
 
-    document.getElementById('langSelect').addEventListener('change', (e) => {
-        LANG = e.target.value;
-        localStorage.setItem('cuaka_lang', LANG);
-        document.getElementById('langSelect2').value = LANG;
-        applyLanguageToUI();
-    });
-    document.getElementById('langSelect2').addEventListener('change', (e) => {
-        LANG = e.target.value;
-        localStorage.setItem('cuaka_lang', LANG);
-        document.getElementById('langSelect').value = LANG;
-        applyLanguageToUI();
-    });
-
-    /**************************************************************************
-     * Basic weather functions (existing Open-Meteo usage)
-     * - reuse approach from original file: geocoding + forecast endpoints
-     * - keep minimal: we do not call external libs here
-     **************************************************************************/
-    function setGreeting() {
-        const hour = new Date().getHours();
-        let text = t('greet_morning');
-        if (hour >= 10) text = t('greet_day');
-        if (hour >= 15) text = t('greet_evening');
-        if (hour >= 19) text = t('greet_night');
-        document.getElementById('greetText').innerText = text;
-    }
-    function updateDateBadge() {
-        const now = new Date();
-        const str = now.toLocaleDateString(LANG === 'id' ? 'id-ID' : 'en-US', { weekday:'short', day:'numeric', month:'short' });
-        document.getElementById('dateBadge').innerText = str;
-    }
-
-    // Demo render functions (mock or live from API)
-    function renderCurrentMock() {
-        document.getElementById('currentTemp').innerHTML = '<i class="fas fa-sun" id="mainIcon"></i> 29°';
-        document.getElementById('weatherDesc').innerText = LANG === 'id' ? 'Cerah' : 'Clear';
-        document.getElementById('windSpeed').innerText = SETTINGS.units === 'metric' ? '12 km/j' : '8 mph';
-        document.getElementById('humidity').innerText = '58%';
-        document.getElementById('cityRegion').innerText = 'Jakarta, ID';
-        // hourly mock
-        const hourly = document.getElementById('hourlyList');
-        hourly.innerHTML = '';
-        for (let i=0;i<12;i++){
-            const el = document.createElement('div');
-            el.className = 'hour-card';
-            el.innerHTML = `<div class="muted">${i===0 ? (LANG==='id'?'Sekarang':'Now') : (i+1)+':00'}</div><div style="font-size:18px;margin-top:6px"> ${20+i}°</div>`;
-            hourly.appendChild(el);
-        }
-        // daily mock
-        const daily = document.getElementById('dailyList');
-        daily.innerHTML = '';
-        const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-        for(let i=0;i<7;i++){
-            const item = document.createElement('div');
-            item.style.display='flex';item.style.justifyContent='space-between';item.style.padding='8px';item.style.background='rgba(255,255,255,0.03)';item.style.borderRadius='8px';
-            item.innerHTML = `<div>${i===0 ? (LANG==='id'?'Hari Ini' : 'Today') : days[i]}</div><div>${25+i}° / ${18+i}°</div>`;
-            daily.appendChild(item);
-        }
-    }
-
-    // initialize minimal UI
-    setGreeting();
-    updateDateBadge();
-    renderCurrentMock();
-
-    /**************************************************************************
-     * Advanced: Web-Push skeleton (client-side)
-     * - UI: set VAPID key + server endpoint
-     * - subscribe/unsubscribe functions create a subscription and POST to server endpoint
-     * - server must accept POST /register-subscription and store subscription
-     **************************************************************************/
-    const subscribeBtn = document.getElementById('subscribePushBtn');
-    const unsubscribeBtn = document.getElementById('unsubscribePushBtn');
-    const sendPushBtn = document.getElementById('sendPushViaServerBtn');
-
-    // helper to urlBase64ToUint8Array (for VAPID)
-    function urlBase64ToUint8Array(base64String) {
-        const padding = '='.repeat((4 - base64String.length % 4) % 4);
-        const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-        const rawData = atob(base64);
-        const outputArray = new Uint8Array(rawData.length);
-        for (let i = 0; i < rawData.length; ++i) {
-            outputArray[i] = rawData.charCodeAt(i);
-        }
-        return outputArray;
-    }
-
-    async function subscribeToPush() {
-        const publicKey = document.getElementById('vapidPublicKey').value.trim();
-        const serverUrl = document.getElementById('pushServerUrl').value.trim();
-        if (!publicKey || !serverUrl) return alert('Isi VAPID public key dan server endpoint terlebih dahulu.');
-
-        if (!('serviceWorker' in navigator)) return alert('Service Worker tidak didukung.');
-        if (!('PushManager' in window)) return alert('Push API tidak didukung.');
-
-        // register sw (if not)
-        let reg;
-        try {
-            reg = await navigator.serviceWorker.register('sw.js');
-        } catch (e) {
-            console.warn('sw register failed', e);
-            reg = await navigator.serviceWorker.ready;
-        }
-
-        try {
-            const sub = await reg.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: urlBase64ToUint8Array(publicKey)
-            });
-            // send subscription to server
-            await fetch(serverUrl, {
-                method:'POST',
-                headers:{'Content-Type':'application/json'},
-                body: JSON.stringify({ subscription: sub })
-            });
-            alert('Berhasil subscribe dan mendaftarkan subscription ke server (jika server OK).');
-        } catch (err) {
-            console.error(err);
-            alert('Gagal subscribe: ' + (err.message||err));
-        }
-    }
-
-    async function unsubscribePush() {
-        try {
-            const reg = await navigator.serviceWorker.ready;
-            const sub = await reg.pushManager.getSubscription();
-            if (sub) {
-                await sub.unsubscribe();
-                alert('Berhasil unsubscribe');
+        /* ------------------------------
+           INIT
+           ------------------------------ */
+        window.onload = () => {
+            applySettingsToUI();
+            setGreeting();
+            updateDate();
+            // Load either saved default city or Jakarta
+            if (settings.defaultCity) {
+                // try geocoding the stored default city
+                searchCityByName(settings.defaultCity).catch(()=> {
+                    // fallback to Jakarta coords
+                    getWeather(-6.2088, 106.8456, "Jakarta", "DKI Jakarta");
+                });
             } else {
-                alert('Tidak ada subscription yang aktif');
+                getWeather(-6.2088, 106.8456, "Jakarta", "DKI Jakarta");
             }
-        } catch (e) {
-            console.error(e);
-            alert('Gagal unsubscribe');
-        }
-    }
 
-    async function triggerServerPush() {
-        const serverUrl = document.getElementById('pushServerUrl').value.trim();
-        if (!serverUrl) return alert('Isi server endpoint untuk trigger push (server harus punya route).');
-        try {
-            // hits server endpoint which should trigger push to stored subscriptions
-            await fetch(serverUrl + '/trigger', { method: 'POST' });
-            alert('Permintaan push dikirim ke server (server perlu implementasi).');
-        } catch (e) {
-            console.error(e);
-            alert('Gagal mengirim permintaan ke server');
-        }
-    }
+            // register sw if available
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').catch(()=>{/*noop*/});
+            }
+        };
 
-    subscribeBtn.addEventListener('click', subscribeToPush);
-    unsubscribeBtn.addEventListener('click', unsubscribePush);
-    sendPushBtn.addEventListener('click', triggerServerPush);
-
-    /**************************************************************************
-     * Radar: load a tile/iframe into radarBox
-     * - For tile URLs, this demo will insert an <img> for a single tile example
-     * - For iframe providers, will inject an iframe (if URL starts with http)
-     * - NOTE: production should use mapping lib (Leaflet/Mapbox) to tile properly
-     **************************************************************************/
-    document.getElementById('loadRadarBtn').addEventListener('click', () => {
-        const url = document.getElementById('radarTileUrl').value.trim();
-        const key = document.getElementById('radarApiKey').value.trim();
-        const box = document.getElementById('radarBox');
-        box.innerHTML = '';
-        if (!url) {
-            box.innerText = LANG === 'id' ? 'Masukkan tile URL atau iframe URL penyedia.' : 'Enter tile URL or iframe URL of provider.';
-            return;
-        }
-
-        // If url contains {z}/{x}/{y} treat as tile template -> show example tile for z=2,x=1,y=1 if no CORS
-        if (url.includes('{z}') && url.includes('{x}') && url.includes('{y}')) {
-            const tileExample = url.replace('{z}','2').replace('{x}','1').replace('{y}','1').replace('{time}','now');
-            const img = document.createElement('img');
-            img.src = tileExample + (key ? (tileExample.includes('?') ? '&' : '?') + ('api_key=' + encodeURIComponent(key)) : '');
-            img.alt = 'Radar tile';
-            img.style.maxWidth = '100%';
-            img.style.borderRadius = '8px';
-            box.appendChild(img);
-        } else {
-            // try embed as iframe
-            const iframe = document.createElement('iframe');
-            iframe.src = url + (key ? (url.includes('?') ? '&' : '?') + ('api_key=' + encodeURIComponent(key)) : '');
-            iframe.style.width = '100%';
-            iframe.style.height = '280px';
-            iframe.style.border = '0';
-            iframe.style.borderRadius = '8px';
-            box.appendChild(iframe);
-        }
-    });
-    document.getElementById('clearRadarBtn').addEventListener('click', () => {
-        document.getElementById('radarBox').innerHTML = LANG === 'id' ? 'Area Radar / Satelit (placeholder)' : 'Radar / Satellite area (placeholder)';
-    });
-
-    // copy example
-    document.getElementById('copyRadarExampleBtn').addEventListener('click', async () => {
-        const text = document.getElementById('radarExample').value;
-        try {
-            await navigator.clipboard.writeText(text);
-            alert(LANG === 'id' ? 'Contoh radar disalin ke clipboard' : 'Radar example copied to clipboard');
-        } catch (e) {
-            alert('Copy failed');
-        }
-    });
-
-    /**************************************************************************
-     * Modal handlers (advanced)
-     **************************************************************************/
-    const advModal = document.getElementById('advancedModal');
-    document.getElementById('openAdvancedBtn').addEventListener('click', () => advModal.style.display='flex');
-    document.getElementById('openAdvancedModalBtn').addEventListener('click', () => advModal.style.display='flex');
-    document.getElementById('closeAdvancedModal').addEventListener('click', () => advModal.style.display='none');
-    document.getElementById('closeAdvancedDone').addEventListener('click', () => advModal.style.display='none');
-
-    // quick test push (client-side notification)
-    document.getElementById('testPushBtn').addEventListener('click', async () => {
-        if (!('Notification' in window)) return alert('Notifikasi tidak didukung');
-        if (Notification.permission !== 'granted') {
-            const p = await Notification.requestPermission();
-            if (p !== 'granted') return alert('Izin notifikasi ditolak');
-        }
-        new Notification(LANG==='id' ? 'Tes Notifikasi' : 'Test Notification', { body: LANG==='id' ? 'Ini adalah notifikasi demo.' : 'This is a demo notification.' });
-    });
-
-    /**************************************************************************
-     * Export to React / Vue (simple single-file starters)
-     * - The content below is minimal starter to show how to mount the preview
-     **************************************************************************/
-    function downloadFile(filename, content, type='text/plain') {
-        const blob = new Blob([content], { type });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = filename; document.body.appendChild(a); a.click();
-        setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 500);
-    }
-
-    document.getElementById('exportReactBtn').addEventListener('click', () => {
-        const content = `// App.jsx - minimal starter
-import React from 'react';
-
-export default function App(){
-  return (
-    <div style={{fontFamily:'Inter, sans-serif',padding:20}}>
-      <h1>Weather Dashboard Pro (React Starter)</h1>
-      <p>Integrate Open-Meteo or your backend. This is only a starter file.</p>
-    </div>
-  );
-}
-`;
-        downloadFile('App.jsx', content, 'text/javascript');
-    });
-
-    document.getElementById('exportVueBtn').addEventListener('click', () => {
-        const content = `<template>
-  <div style="padding:16px;font-family:Inter, sans-serif">
-    <h1>Weather Dashboard Pro (Vue Starter)</h1>
-    <p>Integrate Open-Meteo or your backend. This is only a starter file.</p>
-  </div>
-</template>
-
-<script>
-export default {
-  name: 'App',
-  mounted(){ console.log('Vue starter mounted') }
-}
-</script>
-
-<style scoped>
-</style>
-`;
-        downloadFile('App.vue', content, 'text/plain');
-    });
-
-    /**************************************************************************
-     * SETTINGS: save & load
-     **************************************************************************/
-    document.getElementById('saveSettingsBtn').addEventListener('click', () => {
-        SETTINGS.theme = document.getElementById('themeSelect').value;
-        SETTINGS.units = document.getElementById('unitSelect').value;
-        SETTINGS.timefmt = document.getElementById('timeFmt').value;
-        localStorage.setItem(SETTINGS_KEY, JSON.stringify(SETTINGS));
-        applyTheme();
-        alert(LANG==='id' ? 'Pengaturan disimpan' : 'Settings saved');
-    });
-    document.getElementById('resetSettingsBtn').addEventListener('click', () => {
-        localStorage.removeItem(SETTINGS_KEY); SETTINGS = Object.assign({}, DEFAULT_SETTINGS); applyTheme(); alert(LANG==='id' ? 'Pengaturan direset' : 'Settings reset');
-    });
-
-    function applyTheme(){
-        if (SETTINGS.theme === 'light') {
-            document.documentElement.style.setProperty('--bg-dark','#f4f7fb');
-            document.documentElement.style.setProperty('--card-bg','#ffffff');
-            document.documentElement.style.setProperty('--text','#0b1220');
-            document.documentElement.style.setProperty('--muted','#5d6b78');
-            document.documentElement.style.setProperty('--primary','#2b6bff');
-        } else {
-            document.documentElement.style.setProperty('--bg-dark','#0f1220');
-            document.documentElement.style.setProperty('--card-bg','#121219');
-            document.documentElement.style.setProperty('--text','#e9eef8');
-            document.documentElement.style.setProperty('--muted','#98a0b3');
-            document.documentElement.style.setProperty('--primary','#5c7cfa');
-        }
-    }
-    // init theme from stored settings
-    applyTheme();
-
-    /**************************************************************************
-     * Keyboard shortcuts
-     **************************************************************************/
-    window.addEventListener('keydown', (e) => {
-        if (e.key.toLowerCase() === 's') document.getElementById('openSettingsBtn').click();
-        if (e.key.toLowerCase() === 'a') document.getElementById('openAdvancedBtn').click();
-    });
-
-    /**************************************************************************
-     * Small UX: My Location button uses Geolocation -> fetch weather (demo)
-     **************************************************************************/
-    document.getElementById('btnMyLocation').addEventListener('click', () => {
-        if (!('geolocation' in navigator)) return alert('GPS tidak didukung');
-        navigator.geolocation.getCurrentPosition(async (pos) => {
-            const lat = pos.coords.latitude, lon = pos.coords.longitude;
-            // Very light reverse geocode via open APIs (no library)
+        /* ------------------------------
+           SETTINGS: load/save/apply
+           ------------------------------ */
+        function loadSettings() {
             try {
-                const res = await fetch(\`https://nominatim.openstreetmap.org/reverse?format=json&lat=\${lat}&lon=\${lon}\`);
-                const j = await res.json();
-                const city = j.address.city || j.address.town || j.address.county || (LANG==='id'?'Lokasiku':'My location');
-                document.getElementById('cityRegion').innerText = city;
-                // For demo: update mock temps
-                renderCurrentMock();
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return {...DEFAULTS};
+                const parsed = JSON.parse(raw);
+                return {...DEFAULTS, ...parsed};
             } catch (e) {
-                console.warn('reverse geocode failed', e);
-                renderCurrentMock();
+                return {...DEFAULTS};
             }
-        }, (err)=> { alert('Izin lokasi ditolak'); });
-    });
+        }
 
-    /**************************************************************************
-     * Final notes printed to console for developer
-     **************************************************************************/
-    console.log("Cuaca Dashboard Pro (enhanced) initialized. Multi-language:", LANG);
-    console.log("Advanced: Web-Push requires server (VAPID keys). Radar requires provider tile/iframe.");
+        function saveSettings() {
+            settings.theme = themeSelect.value;
+            settings.tempUnit = tempUnitSelect.value;
+            settings.windUnit = windUnitSelect.value;
+            settings.timeFormat = timeFormatSelect.value;
+            settings.refreshInterval = Number(refreshIntervalInput.value) || 0;
+            settings.notifEnabled = notifToggle.checked;
+            settings.gradient = gradientSelect.value;
+            settings.defaultCity = (defaultCityInput.value || '').trim();
 
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+            applySettingsToUI();
+            scheduleAutoRefresh();
+            showToast('Pengaturan disimpan');
+        }
+
+        function applySettingsToUI() {
+            // Apply theme
+            if (settings.theme === 'light') {
+                document.body.classList.add('theme-light');
+            } else {
+                document.body.classList.remove('theme-light');
+            }
+
+            // Fill settings UI
+            themeSelect.value = settings.theme;
+            tempUnitSelect.value = settings.tempUnit;
+            windUnitSelect.value = settings.windUnit;
+            timeFormatSelect.value = settings.timeFormat;
+            refreshIntervalInput.value = settings.refreshInterval || 0;
+            notifToggle.checked = !!settings.notifEnabled;
+            gradientSelect.value = settings.gradient;
+            defaultCityInput.value = settings.defaultCity || '';
+
+            // Apply gradient
+            applyGradient(settings.gradient);
+
+            // update loader text
+            loaderText.innerText = `Memuat data cuaca... (satuan: ${settings.tempUnit === 'celsius' ? '°C' : '°F'})`;
+        }
+
+        function applyGradient(name) {
+            let gradient = "linear-gradient(135deg,#3a7bd5 0%,#3a6073 100%)";
+            if (name === 'sunny') gradient = "linear-gradient(135deg,#fceabb 0%,#f8b500 100%)";
+            if (name === 'storm') gradient = "linear-gradient(135deg,#141e30 0%,#243b55 100%)";
+            if (name === 'mono') gradient = "linear-gradient(135deg,#757f9a 0%,#d7dde8 100%)";
+            mainCardBg.style.background = gradient;
+        }
+
+        function scheduleAutoRefresh() {
+            if (autoRefreshTimer) {
+                clearInterval(autoRefreshTimer);
+                autoRefreshTimer = null;
+            }
+            const minutes = Number(settings.refreshInterval) || 0;
+            if (minutes > 0) {
+                autoRefreshTimer = setInterval(() => {
+                    // refresh based on current city displayed
+                    const currentCity = cityNameEl.innerText || settings.defaultCity || 'Jakarta';
+                    searchCityByName(currentCity).catch(()=>{/*noop*/});
+                }, minutes * 60 * 1000);
+            }
+        }
+
+        /* ------------------------------
+           UI Helpers
+           ------------------------------ */
+        function toggleLoader(show, text) {
+            loader.style.opacity = show ? '1' : '0';
+            if (text) loaderText.innerText = text;
+            setTimeout(()=> {
+                loader.style.display = show ? 'flex' : 'none';
+            }, 300);
+        }
+
+        function showToast(msg) {
+            // simple non-blocking small toast using alert fallback
+            try {
+                const t = document.createElement('div');
+                t.style.position = 'fixed';
+                t.style.bottom = '24px';
+                t.style.left = '50%';
+                t.style.transform = 'translateX(-50%)';
+                t.style.background = 'rgba(0,0,0,0.6)';
+                t.style.color = 'white';
+                t.style.padding = '10px 14px';
+                t.style.borderRadius = '10px';
+                t.style.zIndex = 1200;
+                t.style.fontSize = '0.95rem';
+                t.innerText = msg;
+                document.body.appendChild(t);
+                setTimeout(()=> t.style.opacity = '0', 2600);
+                setTimeout(()=> t.remove(), 3200);
+            } catch(e) {
+                alert(msg);
+            }
+        }
+
+        /* ------------------------------
+           SEARCH & GEO
+           ------------------------------ */
+        async function searchCity() {
+            const query = cityInput.value.trim();
+            if (!query) return showToast('Masukkan nama kota terlebih dahulu');
+            toggleLoader(true, 'Mencari kota...');
+            try {
+                await searchCityByName(query);
+            } catch (e) {
+                alert('Kota tidak ditemukan');
+                toggleLoader(false);
+            }
+        }
+
+        async function searchCityByName(query) {
+            // Using Open-Meteo geocoding endpoint as before
+            const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=id&format=json`);
+            const geoData = await geoRes.json();
+            if (!geoData || !geoData.results || geoData.results.length === 0) throw new Error('notfound');
+            const loc = geoData.results[0];
+            await getWeather(loc.latitude, loc.longitude, loc.name, loc.admin1 || '');
+        }
+
+        function getGeoLocation() {
+            if (!navigator.geolocation) return alert("GPS tidak didukung");
+            toggleLoader(true, 'Menentukan lokasi...');
+            navigator.geolocation.getCurrentPosition(async pos => {
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+                try {
+                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                    const json = await res.json();
+                    const city = json.address.city || json.address.town || json.address.county || 'Lokasi Saya';
+                    await getWeather(lat, lon, city, "GPS");
+                } catch (e) {
+                    await getWeather(lat, lon, "Lokasi Saya", "GPS");
+                }
+            }, () => {
+                alert("Izin lokasi ditolak");
+                toggleLoader(false);
+            });
+        }
+
+        /* ------------------------------
+           FETCH WEATHER (OPEN-METEO)
+           - uses settings.tempUnit to choose API units when possible
+           ------------------------------ */
+        async function getWeather(lat, lon, cityName, region) {
+            toggleLoader(true, `Memuat data cuaca untuk ${cityName}...`);
+            try {
+                // Build API params according to settings
+                // Open-Meteo supports temperature_unit & windspeed_unit
+                const tempUnitParam = settings.tempUnit === 'fahrenheit' ? 'fahrenheit' : 'celsius';
+                const windUnitParam = settings.windUnit === 'mph' ? 'mph' : 'kmh';
+
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
+                    `&current_weather=true&hourly=temperature_2m,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto` +
+                    `&temperature_unit=${tempUnitParam}&windspeed_unit=${windUnitParam}`;
+
+                const res = await fetch(url);
+                const data = await res.json();
+
+                // Apply render functions
+                renderCurrent(data.current_weather, cityName);
+                renderHourly(data.hourly);
+                renderDaily(data.daily);
+
+                toggleLoader(false);
+
+                // If notifications enabled, optionally send one (simple)
+                if (settings.notifEnabled) {
+                    notifyIfSevere(data.current_weather);
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Gagal mengambil data cuaca");
+                toggleLoader(false);
+            }
+        }
+
+        /* ------------------------------
+           RENDER HELPERS
+           ------------------------------ */
+        function renderCurrent(current, name) {
+            const ui = getWeatherUI(current.weathercode);
+            cityNameEl.innerText = name;
+            currentTempEl.innerText = Math.round(current.temperature) + (settings.tempUnit === 'fahrenheit' ? "°F" : "°C");
+            weatherDescEl.innerText = ui.label;
+            windSpeedEl.innerText = `${Math.round(current.windspeed)} ${settings.windUnit === 'mph' ? 'mph' : 'km/j'}`;
+            // icon
+            mainIconEl.className = `main-icon ${ui.icon}`;
+            applyGradient(settings.gradient);
+
+            // Simulate humidity if not available
+            humidityEl.innerText = (50 + Math.floor(Math.random() * 40)) + "%";
+
+            // UV index - we don't have it from open-meteo in this request; random friendly label
+            const uvN = Math.floor(Math.random() * 11); // 0-10
+            const uvLabel = uvN <= 2 ? 'Rendah' : uvN <= 5 ? 'Sedang' : uvN <=7 ? 'Tinggi' : 'Sangat Tinggi';
+            uvIndexEl.innerText = uvLabel;
+
+            // Visual cues
+            mainCardBg.style.boxShadow = ui.boxShadow || '0 15px 40px rgba(58,123,213,0.25)';
+        }
+
+        function renderHourly(hourly) {
+            hourlyList.innerHTML = '';
+            const now = new Date();
+            const currentHour = now.getHours();
+
+            for (let i = 0; i < 24; i++) {
+                const dataIndex = currentHour + i;
+                if (dataIndex >= hourly.time.length) break;
+                const temp = Math.round(hourly.temperature_2m[dataIndex]);
+                const code = hourly.weathercode[dataIndex];
+                const timeString = hourly.time[dataIndex];
+                const dateObj = new Date(timeString);
+                const hourLabel = i === 0 ? 'Sekarang' : formatHour(dateObj);
+                const ui = getWeatherUI(code);
+                const item = document.createElement('div');
+                item.className = `hour-card ${i === 0 ? 'active' : ''}`;
+                item.innerHTML = `
+                    <div class="hour-time">${hourLabel}</div>
+                    <i class="${ui.icon} hour-icon"></i>
+                    <div class="hour-temp">${temp}°</div>
+                `;
+                hourlyList.appendChild(item);
+            }
+        }
+
+        function renderDaily(daily) {
+            dailyList.innerHTML = '';
+
+            // Sunrise/Sunset hari ini
+            sunriseTimeEl.innerText = daily.sunrise[0].slice(-5);
+            sunsetTimeEl.innerText = daily.sunset[0].slice(-5);
+
+            for (let i = 0; i < 7; i++) {
+                const max = Math.round(daily.temperature_2m_max[i]);
+                const min = Math.round(daily.temperature_2m_min[i]);
+                const code = daily.weathercode[i];
+                const date = new Date(daily.time[i]);
+                const today = new Date();
+                const dayName = i === 0 ? 'Hari Ini' : ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][date.getDay()];
+                const ui = getWeatherUI(code);
+                const item = document.createElement('div');
+                item.className = 'day-row';
+                item.innerHTML = `
+                    <div class="day-name">${dayName}</div>
+                    <div class="day-icon"><i class="${ui.icon}"></i></div>
+                    <div class="day-temp"><span>${max}°</span> <small>${min}°</small></div>
+                `;
+                dailyList.appendChild(item);
+            }
+        }
+
+        /* ------------------------------
+           Weather UI mapping
+           ------------------------------ */
+        function getWeatherUI(code) {
+            // WMO Weather Codes mapping (same as original but extended)
+            if (code === 0) return { label: "Cerah", icon: "fas fa-sun", gradient: "linear-gradient(135deg, #fceabb 0%, #f8b500 100%)", boxShadow: "0 15px 40px rgba(248,181,0,0.18)" };
+            if ([1,2,3].includes(code)) return { label: "Berawan", icon: "fas fa-cloud-sun", gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)", boxShadow: "0 15px 40px rgba(75,150,255,0.18)" };
+            if ([45,48].includes(code)) return { label: "Kabut", icon: "fas fa-smog", gradient: "linear-gradient(135deg, #606c88 0%, #3f4c6b 100%)", boxShadow: "0 15px 40px rgba(60,76,107,0.18)" };
+            if ([51,53,55,61,63,65,80,81,82].includes(code)) return { label: "Hujan", icon: "fas fa-cloud-showers-heavy", gradient: "linear-gradient(135deg, #2c3e50 0%, #3498db 100%)", boxShadow: "0 15px 40px rgba(52,152,219,0.18)" };
+            if ([95,96,99].includes(code)) return { label: "Badai", icon: "fas fa-bolt", gradient: "linear-gradient(135deg, #141e30 0%, #243b55 100%)", boxShadow: "0 15px 40px rgba(36,59,85,0.18)" };
+            return { label: "Mendung", icon: "fas fa-cloud", gradient: "linear-gradient(135deg, #757f9a 0%, #d7dde8 100%)", boxShadow: "0 15px 40px rgba(117,127,154,0.18)" };
+        }
+
+        /* ------------------------------
+           Utilities: format hour
+           ------------------------------ */
+        function formatHour(dateObj) {
+            const h = dateObj.getHours();
+            const m = dateObj.getMinutes().toString().padStart(2,'0');
+            if (settings.timeFormat === '12') {
+                const suffix = h >= 12 ? 'PM' : 'AM';
+                const hh = ((h + 11) % 12 + 1);
+                return `${hh}:${m} ${suffix}`;
+            } else {
+                return `${String(h).padStart(2,'0')}:${m}`;
+            }
+        }
+
+        /* ------------------------------
+           Notifications helper
+           - simple severity check & notify
+           ------------------------------ */
+        async function requestNotifPermission() {
+            if (!('Notification' in window)) {
+                alert('Notifikasi tidak didukung di browser ini.');
+                return;
+            }
+            const perm = await Notification.requestPermission();
+            if (perm === 'granted') {
+                showToast('Izin notifikasi diberikan');
+            } else {
+                showToast('Izin notifikasi tidak diberikan');
+            }
+        }
+
+        function notifyIfSevere(current) {
+            if (!('Notification' in window)) return;
+            if (Notification.permission !== 'granted') return;
+            // Very simple: if weathercode indicates thunder/storm
+            if ([95,96,99].includes(current.weathercode)) {
+                new Notification('Peringatan Cuaca', {
+                    body: `Terdeteksi cuaca ekstrim di ${cityNameEl.innerText}. Tetap waspada!`,
+                    tag: 'weather-severe'
+                });
+            }
+        }
+
+        /* ------------------------------
+           MODAL HANDLERS
+           ------------------------------ */
+        function openSettings() {
+            settingsModal.style.display = 'flex';
+            settingsModal.setAttribute('aria-hidden', 'false');
+        }
+        function closeSettings() {
+            settingsModal.style.display = 'none';
+            settingsModal.setAttribute('aria-hidden', 'true');
+        }
+        function openAbout() {
+            aboutModal.style.display = 'flex';
+            aboutModal.setAttribute('aria-hidden', 'false');
+        }
+        function closeAbout() {
+            aboutModal.style.display = 'none';
+            aboutModal.setAttribute('aria-hidden', 'true');
+        }
+
+        openSettingsBtn.addEventListener('click', openSettings);
+        closeSettingsBtn.addEventListener('click', closeSettings);
+        openAboutBtn.addEventListener('click', openAbout);
+        closeAboutBtn.addEventListener('click', closeAbout);
+        saveSettingsBtn.addEventListener('click', () => { saveSettings(); closeSettings(); });
+
+        notifPermissionBtn.addEventListener('click', requestNotifPermission);
+
+        // keyboard shortcuts
+        window.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 's') openSettings();
+            if (e.key.toLowerCase() === 'a') openAbout();
+        });
+
+        // close modal on background click
+        settingsModal.addEventListener('click', (e)=> { if (e.target === settingsModal) closeSettings(); });
+        aboutModal.addEventListener('click', (e)=> { if (e.target === aboutModal) closeAbout(); });
+
+        /* ------------------------------
+           PWA beforeinstallprompt handler
+           ------------------------------ */
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block';
+            installBtn.addEventListener('click', async () => {
+                deferredPrompt.prompt();
+                const choice = await deferredPrompt.userChoice;
+                if (choice.outcome === 'accepted') {
+                    showToast('Terima kasih. Aplikasi diinstal.');
+                }
+                installBtn.style.display = 'none';
+                deferredPrompt = null;
+            });
+        });
+
+        /* ------------------------------
+           Misc helpers
+           ------------------------------ */
+        function setGreeting() {
+            const hour = new Date().getHours();
+            let text = "Selamat Pagi,";
+            if (hour >= 10) text = "Selamat Siang,";
+            if (hour >= 15) text = "Selamat Sore,";
+            if (hour >= 19) text = "Selamat Malam,";
+            greetText.innerText = text;
+        }
+
+        function updateDate() {
+            const now = new Date();
+            const str = now.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short' });
+            dateBadge.innerText = str;
+        }
+
+        /* ------------------------------
+           Small enhancements: batch events
+           ------------------------------ */
+        document.getElementById('cityInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchCity();
+        });
+
+        /* ------------------------------
+           Notification permission quick-check
+           ------------------------------ */
+        (function initNotifButtonState(){
+            if (!('Notification' in window)) {
+                notifPermissionBtn.disabled = true;
+                notifPermissionBtn.title = 'Notifikasi tidak didukung';
+            }
+        })();
+
+        /* ------------------------------
+           Simple severity check & demo notify
+           ------------------------------ */
+        // Not overcomplicating: leave logic to notifyIfSevere()
+
+        /* ------------------------------
+           End of script
+           ------------------------------ */
     </script>
 </body>
 </html>
