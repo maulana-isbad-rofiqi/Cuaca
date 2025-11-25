@@ -1,11 +1,11 @@
 {
   "name": "Cek Cuaca Indonesia",
-  "short_name": "Cuaca Indo",
+  "short_name": "Cuaca ID",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#1e3c72",
   "theme_color": "#4facfe",
-  "orientation": "portrait-primary",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/1163/1163661.png",
