@@ -4,31 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cek Cuaca Indonesia</title>
+    <meta name="description" content="Aplikasi Cek Cuaca Indonesia berbasis data BMKG">
     <meta name="theme-color" content="#4facfe">
-    <meta name="description" content="Aplikasi Cek Cuaca Indonesia berbasis BMKG">
-    
-    <link rel="stylesheet" href="style.css">
+
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1163/1163661.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #4facfe;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --text-color: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            display: flex; justify-content: center; align-items: center;
+            color: var(--text-color); padding: 20px; overflow-x: hidden;
+        }
+        /* Background Decoration */
+        .bg-circle { position: absolute; border-radius: 50%; filter: blur(80px); z-index: -1; }
+        .c1 { width: 300px; height: 300px; background: #ff00cc; top: -50px; left: -50px; opacity: 0.4; }
+        .c2 { width: 400px; height: 400px; background: #333399; bottom: -100px; right: -50px; opacity: 0.5; }
+
+        .container {
+            background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 24px; padding: 2rem;
+            width: 100%; max-width: 500px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        header { text-align: center; margin-bottom: 2rem; }
+        h1 { font-size: 1.8rem; font-weight: 600; margin-bottom: 5px; }
+        
+        /* Search Box */
+        .search-box {
+            display: flex; align-items: center; background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px; padding: 5px 20px; margin-bottom: 2rem; border: 1px solid var(--glass-border);
+        }
+        .search-box input { flex: 1; background: transparent; border: none; outline: none; padding: 10px; color: white; font-size: 1rem; }
+        .search-box input::placeholder { color: rgba(255, 255, 255, 0.6); }
+        .search-box button {
+            background: white; color: #1e3c72; border: none; border-radius: 50%; width: 40px; height: 40px;
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center;
+        }
+        .search-box button:hover { transform: scale(1.1); }
+
+        /* UI Elements */
+        .weather-info { display: none; animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .location-badge { text-align: center; background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 10px; margin-bottom: 20px; }
+        .main-weather { text-align: center; margin-bottom: 25px; }
+        .weather-icon i { font-size: 5rem; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,255,255,0.5); }
+        .temp { font-size: 3.5rem; font-weight: 600; line-height: 1; }
+        .desc { font-size: 1.2rem; text-transform: capitalize; margin-top: 5px; font-weight: 300; }
+        
+        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .detail-card { background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 16px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
+        .detail-card i { font-size: 1.5rem; margin-bottom: 8px; color: #00f2fe; }
+        .detail-value { font-weight: 600; font-size: 1rem; }
+        
+        .wind-section { background: rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 15px; margin-top: 15px; }
+        .wind-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
+        .wind-data { display: flex; justify-content: space-between; font-size: 0.9rem; }
+        
+        .bmkg-link { display: block; text-align: center; margin-top: 25px; text-decoration: none; color: white; background: rgba(255, 255, 255, 0.2); padding: 10px; border-radius: 8px; font-size: 0.9rem; transition: background 0.3s; }
+        .bmkg-link:hover { background: rgba(255, 255, 255, 0.4); }
+        
+        .loader { display: none; border: 4px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top: 4px solid white; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .error-msg { color: #ff6b6b; text-align: center; margin-top: 10px; display: none; }
+        
+        /* Install Button */
+        #installBtn {
+            display: none; width: 100%; background: #ffffff; color: #1e3c72; 
+            padding: 10px; margin-top: 10px; border: none; border-radius: 8px; 
+            font-weight: bold; cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-
     <div class="bg-circle c1"></div>
     <div class="bg-circle c2"></div>
 
     <div class="container">
         <header>
             <h1>Info Cuaca</h1>
-            <p style="font-size: 0.9rem; opacity: 0.8;">Data Terkini dari BMKG</p>
-            <button id="installBtn"><i class="fas fa-download"></i> Install Aplikasi</button>
+            <p style="font-size: 0.9rem; opacity: 0.8;">Data BMKG Indonesia</p>
+            <button id="installBtn"><i class="fas fa-download"></i> Install App</button>
         </header>
 
         <div class="search-box">
-            <input type="text" id="cityInput" placeholder="Nama kota (cth: Jakarta)...">
-            <button id="searchBtn"><i class="fas fa-search"></i></button>
+            <input type="text" id="cityInput" placeholder="Cari kota (cth: Bandung)...">
+            <button onclick="searchWeather()"><i class="fas fa-search"></i></button>
         </div>
 
         <div class="loader" id="loader"></div>
@@ -62,6 +134,94 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // --- LOGIKA CUACA ---
+        const apiBase = 'https://api.ootaizumi.web.id/lokasi/cuaca?lokasi=';
+        document.getElementById("cityInput").addEventListener("keyup", function(e) {
+            if (e.key === "Enter") searchWeather();
+        });
+
+        async function searchWeather() {
+            const input = document.getElementById('cityInput').value;
+            const loader = document.getElementById('loader');
+            const weatherInfo = document.getElementById('weatherInfo');
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (!input) return;
+
+            loader.style.display = 'block';
+            weatherInfo.style.display = 'none';
+            errorMsg.style.display = 'none';
+
+            try {
+                const response = await fetch(apiBase + encodeURIComponent(input));
+                const data = await response.json();
+                if (!data.status) throw new Error('Data tidak ditemukan');
+
+                const res = data.result;
+                const loc = res.lokasi;
+                const w = res.cuaca;
+
+                document.getElementById('locName').innerText = res.namaTempat;
+                document.getElementById('locProv').innerText = loc.provinsi;
+                document.getElementById('locKec').innerText = loc.kecamatan;
+                document.getElementById('tempValue').innerText = w.suhu;
+                document.getElementById('weatherDesc').innerText = w.deskripsi;
+                document.getElementById('updateTime').innerText = w.waktu;
+                document.getElementById('humidity').innerText = w.kelembapan;
+                document.getElementById('clouds').innerText = w.tutupanAwan;
+                document.getElementById('visibility').innerText = w.jarakPandang.teks;
+                document.getElementById('windDir').innerText = w.angin.dari;
+                document.getElementById('windSpeed').innerText = w.angin.kecepatan;
+                document.getElementById('windDeg').innerText = w.angin.derajat + '°';
+                document.getElementById('bmkgLink').href = res.url.bmkg;
+
+                updateIcon(w.deskripsi);
+                loader.style.display = 'none';
+                weatherInfo.style.display = 'block';
+            } catch (error) {
+                console.error(error);
+                loader.style.display = 'none';
+                errorMsg.innerText = "Gagal mengambil data. Pastikan nama kota benar.";
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        function updateIcon(desc) {
+            const iconEl = document.querySelector('#weatherIcon i');
+            const d = desc.toLowerCase();
+            iconEl.className = 'fas';
+            if (d.includes('hujan')) iconEl.classList.add(d.includes('petir') ? 'fa-cloud-bolt' : 'fa-cloud-showers-heavy');
+            else if (d.includes('berawan') || d.includes('mendung')) iconEl.classList.add('fa-cloud');
+            else if (d.includes('cerah') || d.includes('panas')) iconEl.classList.add('fa-sun');
+            else if (d.includes('kabut')) iconEl.classList.add('fa-smog');
+            else iconEl.classList.add('fa-cloud-sun');
+        }
+
+        // --- SERVICE WORKER REGISTRATION ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Fail:', err));
+            });
+        }
+
+        // --- INSTALL PROMPT LOGIC ---
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const btn = document.getElementById('installBtn');
+            btn.style.display = 'block';
+            btn.addEventListener('click', () => {
+                btn.style.display = 'none';
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    deferredPrompt = null;
+                });
+            });
+        });
+    </script>
 </body>
 </html>
