@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cuaca Pro Global</title>
+    <title>Cuaca Pro Ultimate</title>
     <meta name="theme-color" content="#1e1e2e">
-    <meta name="description" content="Ultimate Weather Dashboard - Multi Language Support">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1163/1163661.png">
     
@@ -23,83 +22,89 @@
             --text-main: #ffffff;
             --text-sec: #a0a0b0;
             --font-main: 'Outfit', sans-serif;
+            --radius: 20px;
         }
 
-        /* RTL & Font Support */
+        /* Language Specific Fonts */
         [lang="ar"] { --font-main: 'Tajawal', sans-serif; direction: rtl; }
         [lang="ja"] { --font-main: 'Noto Sans JP', sans-serif; }
         [lang="ko"] { --font-main: 'Noto Sans KR', sans-serif; }
 
         *{margin:0;padding:0;box-sizing:border-box;font-family:var(--font-main);-webkit-tap-highlight-color:transparent}
         
-        body{background-color:var(--bg-dark);color:var(--text-main);min-height:100vh;display:flex;justify-content:center;padding:18px 12px;transition:background-color .3s,color .3s}
+        body{background-color:var(--bg-dark);color:var(--text-main);min-height:100vh;display:flex;justify-content:center;padding:15px;transition:0.3s}
         .app-container{width:100%;max-width:520px;display:flex;flex-direction:column;gap:18px}
 
-        /* RTL Specific Fixes */
-        [lang="ar"] .header, [lang="ar"] .search-bar, [lang="ar"] .day-row { flex-direction: row; }
+        /* RTL Layout Fixes */
+        [lang="ar"] .header, [lang="ar"] .search-bar, [lang="ar"] .day-row, [lang="ar"] .row { flex-direction: row; }
         [lang="ar"] .main-temp { margin-left: 0; margin-right: 12px; }
         [lang="ar"] .day-temp { text-align: left; }
         [lang="ar"] .day-name { text-align: right; }
-        
-        /* Header */
-        .header{display:flex;justify-content:space-between;align-items:center;padding:0 6px}
+        [lang="ar"] .btn-icon i { transform: scaleX(-1); } /* Flip icons like back arrows if any */
+        [lang="ar"] .fa-search, [lang="ar"] .fa-cog, [lang="ar"] .fa-location-crosshairs { transform: none !important; }
+
+        /* Components */
+        .header{display:flex;justify-content:space-between;align-items:center;padding:0 5px}
         .greeting h2{font-size:1.4rem;font-weight:700}
         .greeting p{font-size:0.9rem;color:var(--text-sec)}
-        .date-badge{background:#2c2c3a;padding:8px 12px;border-radius:12px;font-size:0.78rem;color:var(--text-sec);font-weight:600}
+        .date-badge{background:#2c2c3a;padding:8px 12px;border-radius:12px;font-size:0.8rem;color:var(--text-sec);font-weight:600}
 
-        /* Search bar */
-        .search-bar{background:var(--card-bg);padding:8px;border-radius:20px;display:flex;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,0.25)}
-        .search-bar input{flex:1;background:transparent;border:none;padding:0 12px;color:inherit;font-size:1rem;outline:none}
+        .search-bar{background:var(--card-bg);padding:8px;border-radius:var(--radius);display:flex;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+        .search-bar input{flex:1;background:transparent;border:none;padding:0 10px;color:inherit;font-size:1rem;outline:none}
         .btn-icon{width:45px;height:45px;border-radius:14px;border:none;background:var(--primary);color:white;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:0.2s}
         .btn-icon.secondary{background:#2c2c3a;color:var(--text-sec)}
-        .btn-icon:active{transform:scale(.95)}
+        .btn-icon:active{transform:scale(0.95)}
 
-        /* Main card */
-        .main-card{background:linear-gradient(135deg,#3a7bd5 0%,#3a6073 100%);border-radius:30px;padding:26px;color:white;position:relative;overflow:hidden;box-shadow:0 15px 40px rgba(58,123,213,0.25);transition:0.3s}
-        .main-card-header{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:2}
+        .main-card{background:linear-gradient(135deg,#3a7bd5 0%,#3a6073 100%);border-radius:30px;padding:25px;color:white;position:relative;overflow:hidden;box-shadow:0 15px 40px rgba(58,123,213,0.3);transition:0.5s}
+        .main-card-header{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2}
         .city-name{font-size:1.5rem;font-weight:700;display:flex;align-items:center;gap:8px}
         .weather-status{background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:0.85rem;font-weight:600;backdrop-filter:blur(5px)}
-        .main-temp-wrapper{text-align:center;margin:18px 0;position:relative;z-index:2}
-        .main-icon{font-size:5rem;margin-bottom:6px;filter:drop-shadow(0 5px 15px rgba(0,0,0,0.2))}
-        .main-temp{font-size:4.2rem;font-weight:700;line-height:1;margin-left:12px}
-        .main-details{display:flex;justify-content:space-around;background:rgba(0,0,0,0.15);border-radius:18px;padding:12px 10px;backdrop-filter:blur(5px)}
+        
+        .main-temp-wrapper{text-align:center;margin:20px 0;position:relative;z-index:2}
+        .main-icon{font-size:5rem;margin-bottom:5px;filter:drop-shadow(0 5px 15px rgba(0,0,0,0.2))}
+        .main-temp{font-size:4.5rem;font-weight:700;line-height:1;margin-left:10px}
+        
+        .main-details{display:flex;justify-content:space-around;background:rgba(0,0,0,0.15);border-radius:18px;padding:15px;backdrop-filter:blur(5px)}
         .detail-item{text-align:center}
-        .detail-item span{display:block;font-size:0.92rem;font-weight:700}
-        .detail-item small{font-size:0.72rem;opacity:0.8}
+        .detail-item span{display:block;font-size:1rem;font-weight:700}
+        .detail-item small{font-size:0.75rem;opacity:0.8}
 
-        /* Hourly */
-        .section-title{font-size:1.05rem;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+        .section-title{font-size:1.1rem;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px;margin-top:20px}
+        
         .hourly-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
         .hourly-scroll::-webkit-scrollbar{display:none}
-        .hour-card{min-width:75px;background:var(--card-bg);border-radius:16px;padding:12px 10px;text-align:center;border:1px solid rgba(255,255,255,0.05)}
+        .hour-card{min-width:75px;background:var(--card-bg);border-radius:16px;padding:15px 10px;text-align:center;border:1px solid rgba(255,255,255,0.05)}
         .hour-card.active{background:var(--primary);border-color:var(--primary)}
         
-        /* Daily */
         .daily-list{display:flex;flex-direction:column;gap:10px}
-        .day-row{display:flex;justify-content:space-between;align-items:center;background:var(--card-bg);padding:12px 16px;border-radius:14px;border:1px solid rgba(255,255,255,0.05)}
-        .day-name{width:110px;font-weight:600}
+        .day-row{display:flex;justify-content:space-between;align-items:center;background:var(--card-bg);padding:15px;border-radius:16px;border:1px solid rgba(255,255,255,0.05)}
+        .day-name{width:120px;font-weight:600}
         .day-temp{width:100px;text-align:right;font-weight:700;color:var(--text-sec)}
         .day-temp span{color:var(--text-main)}
 
-        /* Mini Grid */
-        .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-        .small-card{background:var(--card-bg);padding:12px;border-radius:12px;}
+        .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+        .small-card{background:var(--card-bg);padding:15px;border-radius:16px;display:flex;flex-direction:column;gap:5px}
 
-        /* Loader */
+        /* MODAL STYLES */
+        .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:1100;backdrop-filter:blur(4px)}
+        .modal{background:var(--card-bg);border-radius:24px;padding:24px;width:90%;max-width:480px;box-shadow:0 20px 50px rgba(0,0,0,0.5);transform:translateY(20px);transition:0.3s;max-height:85vh;overflow-y:auto}
+        .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+        .modal h3{font-size:1.3rem}
+        
+        .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;gap:10px}
+        .row label{flex:1;font-size:0.95rem;color:var(--text-sec)}
+        .select, .input{padding:10px 14px;border-radius:12px;border:none;background:#2b2b33;color:inherit;outline:none;width:50%;font-size:0.9rem;text-align:center}
+        .input{width:60%;text-align:left}
+        
+        .save-btn{background:var(--primary);color:white;border:none;padding:12px;border-radius:14px;font-weight:700;cursor:pointer;width:100%;margin-top:10px;font-size:1rem}
+        
+        .install-btn{background:var(--text-main);color:var(--bg-dark);border:none;padding:15px;border-radius:18px;font-weight:700;cursor:pointer;margin-top:20px;display:none;width:100%}
+
         .loading-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-dark);z-index:999;display:flex;justify-content:center;align-items:center;flex-direction:column;gap:15px;transition:opacity .3s}
         .spinner{width:45px;height:45px;border:4px solid var(--card-bg);border-top:4px solid var(--primary);border-radius:50%;animation:spin .8s linear infinite}
         @keyframes spin{to{transform:rotate(360deg)}}
 
-        /* Modal */
-        .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:1100;backdrop-filter:blur(3px)}
-        .modal{background:var(--card-bg);border-radius:18px;padding:20px;width:92%;max-width:520px;box-shadow:0 20px 50px rgba(0,0,0,0.5);transform:translateY(20px);transition:0.2s}
-        .row{display:flex;gap:10px;align-items:center;margin-bottom:12px;justify-content:space-between}
-        .select, .input{padding:10px;border-radius:10px;border:none;background:#2b2b33;color:inherit;outline:none;width:50%}
-        .save-btn{background:var(--primary);color:white;border:none;padding:10px 16px;border-radius:12px;font-weight:700;cursor:pointer}
-
-        #installBtn{background:var(--text-main);color:var(--bg-dark);border:none;padding:14px;border-radius:18px;font-weight:700;cursor:pointer;margin-top:10px;display:none;width:100%}
-
-        /* Light Theme */
+        /* Light Theme Override */
         .theme-light{--bg-dark:var(--bg-light);--card-bg:#ffffff;--text-main:#0e1724;--text-sec:#53607a;--primary:#2b6bff;}
         .theme-light .date-badge{background:#eef3ff}
     </style>
@@ -119,7 +124,7 @@
             </div>
             <div style="display:flex;gap:8px;align-items:center">
                 <div class="date-badge" id="dateBadge">...</div>
-                <button class="btn-icon secondary" onclick="openSettings()"><i class="fas fa-cog"></i></button>
+                <button class="btn-icon secondary" onclick="openModal('settingsModal')"><i class="fas fa-cog"></i></button>
             </div>
         </header>
 
@@ -132,7 +137,10 @@
         <div class="main-card" id="mainCardBg">
             <div class="main-card-header">
                 <div class="city-name"><i class="fas fa-map-marker-alt"></i> <span id="cityName">...</span></div>
-                <div class="weather-status" id="weatherDesc">...</div>
+                <div style="display:flex;gap:8px;align-items:center">
+                    <div class="weather-status" id="weatherDesc">...</div>
+                    <button class="btn-icon secondary" style="background:rgba(0,0,0,0.2);width:32px;height:32px" onclick="openModal('aboutModal')"><i class="fas fa-info"></i></button>
+                </div>
             </div>
 
             <div class="main-temp-wrapper">
@@ -165,7 +173,7 @@
         </div>
 
         <div>
-            <div class="section-title"><i class="far fa-calendar-alt"></i> <span data-i18n="daily">Daily Forecast</span></div>
+            <div class="section-title"><i class="far fa-calendar-alt"></i> <span data-i18n="daily">Daily</span></div>
             <div class="daily-list" id="dailyList"></div>
         </div>
 
@@ -180,21 +188,25 @@
             </div>
         </div>
 
-        <button id="installBtn">Install App</button>
+        <button id="installBtn" class="install-btn">Install App</button>
+        <div style="height:20px"></div>
     </div>
 
     <div class="modal-backdrop" id="settingsModal">
         <div class="modal">
-            <h3 style="margin-bottom:15px"><i class="fas fa-globe"></i> <span data-i18n="settings">Settings</span></h3>
+            <div class="modal-header">
+                <h3><i class="fas fa-sliders-h"></i> <span data-i18n="settings">Settings</span></h3>
+                <button class="btn-icon secondary" onclick="closeModal('settingsModal')"><i class="fas fa-times"></i></button>
+            </div>
 
             <div class="row">
                 <label data-i18n="language">Language</label>
                 <select id="langSelect" class="select">
-                    <option value="id">Bahasa Indonesia</option>
+                    <option value="id">Indonesia</option>
                     <option value="en">English</option>
-                    <option value="ar">العربية (Arabic)</option>
-                    <option value="ja">日本語 (Japanese)</option>
-                    <option value="ko">한국어 (Korean)</option>
+                    <option value="ar">العربية</option>
+                    <option value="ja">日本語</option>
+                    <option value="ko">한국어</option>
                 </select>
             </div>
 
@@ -207,202 +219,219 @@
             </div>
 
             <div class="row">
-                <label data-i18n="tempUnit">Unit</label>
+                <label data-i18n="tempUnit">Temp Unit</label>
                 <select id="tempUnit" class="select">
                     <option value="celsius">Celsius (°C)</option>
                     <option value="fahrenheit">Fahrenheit (°F)</option>
                 </select>
             </div>
 
-            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px">
-                <button class="save-btn" id="saveBtn" data-i18n="save">Save</button>
-                <button class="btn-icon secondary" onclick="closeSettings()"><i class="fas fa-times"></i></button>
+            <div class="row">
+                <label data-i18n="windUnit">Wind Unit</label>
+                <select id="windUnitSelect" class="select">
+                    <option value="kmh">km/h</option>
+                    <option value="mph">mph</option>
+                    <option value="ms">m/s</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <label data-i18n="timeFormat">Time Format</label>
+                <select id="timeFormatSelect" class="select">
+                    <option value="24">24 Hour</option>
+                    <option value="12">12 Hour (AM/PM)</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <label data-i18n="bgStyle">Background</label>
+                <select id="bgStyleSelect" class="select">
+                    <option value="auto">Auto (Weather)</option>
+                    <option value="blue">Ocean Blue</option>
+                    <option value="orange">Sunset Orange</option>
+                    <option value="mono">Monochrome</option>
+                </select>
+            </div>
+            
+            <div class="row">
+                <label data-i18n="defaultCity">Default City</label>
+                <input type="text" id="defaultCityInput" class="input" placeholder="e.g. Jakarta">
+            </div>
+
+            <button class="save-btn" id="saveBtn" data-i18n="save">Save Changes</button>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="aboutModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-info-circle"></i> <span data-i18n="about">About</span></h3>
+                <button class="btn-icon secondary" onclick="closeModal('aboutModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <p style="margin-bottom:10px;line-height:1.5">
+                <strong>Cuaca Pro Ultimate</strong><br>
+                v2.0.0 Global Edition
+            </p>
+            <p style="color:var(--text-sec);font-size:0.9rem;margin-bottom:15px">
+                Aplikasi cuaca lengkap dengan dukungan multi-bahasa, kustomisasi penuh, dan tampilan responsif. Data disediakan oleh Open-Meteo.
+            </p>
+            <div style="background:#2b2b33;padding:10px;border-radius:12px;font-size:0.85rem;color:var(--text-sec)">
+                Made with ❤️
             </div>
         </div>
     </div>
 
     <script>
-        // --- DICTIONARY BAHASA (i18n) ---
+        // --- DICTIONARY ---
         const DICTIONARY = {
             id: {
                 searchPlaceholder: "Cari kota...",
-                greetingMorning: "Selamat Pagi,",
-                greetingAfternoon: "Selamat Siang,",
-                greetingEvening: "Selamat Sore,",
-                greetingNight: "Selamat Malam,",
+                greetingMorning: "Selamat Pagi,", greetingAfternoon: "Selamat Siang,", greetingEvening: "Selamat Sore,", greetingNight: "Selamat Malam,",
                 subGreet: "Cek cuaca hari ini yuk!",
-                wind: "Angin", humidity: "Kelembapan",
-                hourly: "Cuaca Per Jam", daily: "7 Hari Kedepan",
-                sunrise: "Terbit", sunset: "Terbenam",
-                settings: "Pengaturan", language: "Bahasa", theme: "Tema",
-                dark: "Gelap", light: "Terang", tempUnit: "Satuan Suhu", save: "Simpan",
-                w_clear: "Cerah", w_cloudy: "Berawan", w_fog: "Kabut", w_rain: "Hujan", w_storm: "Badai", w_snow: "Salju",
-                loading: "Memuat data...",
-                now: "Sekarang", today: "Hari Ini"
+                wind: "Angin", humidity: "Kelembapan", hourly: "Cuaca Per Jam", daily: "7 Hari Kedepan", sunrise: "Terbit", sunset: "Terbenam",
+                settings: "Pengaturan", language: "Bahasa", theme: "Tema", dark: "Gelap", light: "Terang", tempUnit: "Satuan Suhu", windUnit: "Satuan Angin",
+                timeFormat: "Format Waktu", bgStyle: "Gaya Latar", defaultCity: "Kota Default", save: "Simpan", about: "Tentang",
+                w_clear: "Cerah", w_cloudy: "Berawan", w_rain: "Hujan", w_storm: "Badai", w_snow: "Salju", w_fog: "Kabut",
+                loading: "Memuat data...", now: "Sekarang", today: "Hari Ini"
             },
             en: {
                 searchPlaceholder: "Search city...",
-                greetingMorning: "Good Morning,",
-                greetingAfternoon: "Good Afternoon,",
-                greetingEvening: "Good Evening,",
-                greetingNight: "Good Night,",
+                greetingMorning: "Good Morning,", greetingAfternoon: "Good Afternoon,", greetingEvening: "Good Evening,", greetingNight: "Good Night,",
                 subGreet: "Let's check the weather!",
-                wind: "Wind", humidity: "Humidity",
-                hourly: "Hourly Forecast", daily: "7-Day Forecast",
-                sunrise: "Sunrise", sunset: "Sunset",
-                settings: "Settings", language: "Language", theme: "Theme",
-                dark: "Dark", light: "Light", tempUnit: "Unit", save: "Save",
-                w_clear: "Clear Sky", w_cloudy: "Cloudy", w_fog: "Foggy", w_rain: "Rain", w_storm: "Thunderstorm", w_snow: "Snow",
-                loading: "Loading data...",
-                now: "Now", today: "Today"
+                wind: "Wind", humidity: "Humidity", hourly: "Hourly Forecast", daily: "7-Day Forecast", sunrise: "Sunrise", sunset: "Sunset",
+                settings: "Settings", language: "Language", theme: "Theme", dark: "Dark", light: "Light", tempUnit: "Temp Unit", windUnit: "Wind Unit",
+                timeFormat: "Time Format", bgStyle: "Background", defaultCity: "Default City", save: "Save", about: "About",
+                w_clear: "Clear", w_cloudy: "Cloudy", w_rain: "Rain", w_storm: "Storm", w_snow: "Snow", w_fog: "Fog",
+                loading: "Loading...", now: "Now", today: "Today"
             },
             ar: {
                 searchPlaceholder: "ابحث عن مدينة...",
-                greetingMorning: "صباح الخير،",
-                greetingAfternoon: "طاب مساؤك،",
-                greetingEvening: "مساء الخير،",
-                greetingNight: "تصبح على خير،",
-                subGreet: "دعنا نتحقق من الطقس!",
-                wind: "الرياح", humidity: "الرطوبة",
-                hourly: "الطقس بالساعة", daily: "توقعات 7 أيام",
-                sunrise: "الشروق", sunset: "الغروب",
-                settings: "الإعدادات", language: "اللغة", theme: "السمة",
-                dark: "داكن", light: "فاتح", tempUnit: "وحدة الحرارة", save: "حفظ",
-                w_clear: "سماء صافية", w_cloudy: "غائم", w_fog: "ضباب", w_rain: "مطر", w_storm: "عاصفة", w_snow: "ثلج",
-                loading: "جاري التحميل...",
-                now: "الآن", today: "اليوم"
+                greetingMorning: "صباح الخير،", greetingAfternoon: "طاب مساؤك،", greetingEvening: "مساء الخير،", greetingNight: "تصبح على خير،",
+                subGreet: "لنتحقق من الطقس!",
+                wind: "الرياح", humidity: "الرطوبة", hourly: "بالساعة", daily: "يوميا", sunrise: "شروق", sunset: "غروب",
+                settings: "الإعدادات", language: "اللغة", theme: "السمة", dark: "داكن", light: "فاتح", tempUnit: "وحدة الحرارة", windUnit: "وحدة الرياح",
+                timeFormat: "تنسيق الوقت", bgStyle: "الخلفية", defaultCity: "المدينة الافتراضية", save: "حفظ", about: "حول",
+                w_clear: "صافي", w_cloudy: "غائم", w_rain: "مطر", w_storm: "عاصفة", w_snow: "ثلج", w_fog: "ضباب",
+                loading: "جاري التحميل...", now: "الآن", today: "اليوم"
             },
             ja: {
                 searchPlaceholder: "都市を検索...",
-                greetingMorning: "おはようございます、",
-                greetingAfternoon: "こんにちは、",
-                greetingEvening: "こんばんは、",
-                greetingNight: "おやすみなさい、",
-                subGreet: "今日の天気を確認しましょう！",
-                wind: "風速", humidity: "湿度",
-                hourly: "1時間ごとの天気", daily: "週間予報",
-                sunrise: "日の出", sunset: "日の入り",
-                settings: "設定", language: "言語", theme: "テーマ",
-                dark: "ダーク", light: "ライト", tempUnit: "温度単位", save: "保存",
-                w_clear: "快晴", w_cloudy: "曇り", w_fog: "霧", w_rain: "雨", w_storm: "雷雨", w_snow: "雪",
-                loading: "読み込み中...",
-                now: "現在", today: "今日"
+                greetingMorning: "おはよう、", greetingAfternoon: "こんにちは、", greetingEvening: "こんばんは、", greetingNight: "おやすみ、",
+                subGreet: "今日の天気は？",
+                wind: "風速", humidity: "湿度", hourly: "時間ごと", daily: "週間予報", sunrise: "日の出", sunset: "日の入り",
+                settings: "設定", language: "言語", theme: "テーマ", dark: "ダーク", light: "ライト", tempUnit: "温度", windUnit: "風速単位",
+                timeFormat: "時間形式", bgStyle: "背景", defaultCity: "デフォルト都市", save: "保存", about: "アプリについて",
+                w_clear: "晴れ", w_cloudy: "曇り", w_rain: "雨", w_storm: "雷雨", w_snow: "雪", w_fog: "霧",
+                loading: "読み込み中...", now: "現在", today: "今日"
             },
             ko: {
                 searchPlaceholder: "도시 검색...",
-                greetingMorning: "좋은 아침입니다,",
-                greetingAfternoon: "좋은 오후입니다,",
-                greetingEvening: "좋은 저녁입니다,",
-                greetingNight: "안녕히 주무세요,",
-                subGreet: "오늘 날씨를 확인해보세요!",
-                wind: "바람", humidity: "습도",
-                hourly: "시간별 날씨", daily: "주간 예보",
-                sunrise: "일출", sunset: "일몰",
-                settings: "설정", language: "언어", theme: "테마",
-                dark: "다크", light: "라이트", tempUnit: "온도 단위", save: "저장",
-                w_clear: "맑음", w_cloudy: "흐림", w_fog: "안개", w_rain: "비", w_storm: "뇌우", w_snow: "눈",
-                loading: "로딩 중...",
-                now: "지금", today: "오늘"
+                greetingMorning: "좋은 아침,", greetingAfternoon: "좋은 점심,", greetingEvening: "좋은 저녁,", greetingNight: "안녕히 주무세요,",
+                subGreet: "날씨를 확인해보세요!",
+                wind: "바람", humidity: "습도", hourly: "시간별", daily: "주간", sunrise: "일출", sunset: "일몰",
+                settings: "설정", language: "언어", theme: "테마", dark: "다크", light: "라이트", tempUnit: "온도", windUnit: "풍속 단위",
+                timeFormat: "시간 형식", bgStyle: "배경 스타일", defaultCity: "기본 도시", save: "저장", about: "정보",
+                w_clear: "맑음", w_cloudy: "흐림", w_rain: "비", w_storm: "뇌우", w_snow: "눈", w_fog: "안개",
+                loading: "로딩 중...", now: "지금", today: "오늘"
             }
         };
 
-        // --- APP STATE ---
+        // --- STATE ---
         let config = {
-            lang: 'id',
-            theme: 'dark',
-            unit: 'celsius',
-            lastCity: 'Jakarta',
-            lastLat: -6.2088,
-            lastLon: 106.8456
+            lang: 'id', theme: 'dark', tempUnit: 'celsius', windUnit: 'kmh', timeFormat: '24', bgStyle: 'auto',
+            defaultCity: 'Jakarta', lastLat: -6.2088, lastLon: 106.8456
         };
 
         // --- INIT ---
         window.onload = () => {
             loadConfig();
-            applyLanguage();
-            applyTheme();
             refreshWeather();
             if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
         };
 
         function loadConfig() {
-            const saved = localStorage.getItem('cuacaProGlobal');
+            const saved = localStorage.getItem('cuacaUltimateConfig');
             if (saved) config = { ...config, ...JSON.parse(saved) };
             
-            // Set UI inputs
+            // Populate Inputs
             document.getElementById('langSelect').value = config.lang;
             document.getElementById('themeSelect').value = config.theme;
-            document.getElementById('tempUnit').value = config.unit;
+            document.getElementById('tempUnit').value = config.tempUnit;
+            document.getElementById('windUnitSelect').value = config.windUnit;
+            document.getElementById('timeFormatSelect').value = config.timeFormat;
+            document.getElementById('bgStyleSelect').value = config.bgStyle;
+            document.getElementById('defaultCityInput').value = config.defaultCity;
+
+            applySettingsUI();
         }
 
-        function saveConfig() {
+        document.getElementById('saveBtn').addEventListener('click', () => {
             config.lang = document.getElementById('langSelect').value;
             config.theme = document.getElementById('themeSelect').value;
-            config.unit = document.getElementById('tempUnit').value;
-            localStorage.setItem('cuacaProGlobal', JSON.stringify(config));
+            config.tempUnit = document.getElementById('tempUnit').value;
+            config.windUnit = document.getElementById('windUnitSelect').value;
+            config.timeFormat = document.getElementById('timeFormatSelect').value;
+            config.bgStyle = document.getElementById('bgStyleSelect').value;
+            const newCity = document.getElementById('defaultCityInput').value;
             
-            applyLanguage();
-            applyTheme();
-            refreshWeather();
-            closeSettings();
-        }
+            if(newCity && newCity !== config.defaultCity) {
+                config.defaultCity = newCity;
+                // If city changed in settings, trigger search
+                searchCity(newCity); 
+            } else {
+                refreshWeather();
+            }
 
-        document.getElementById('saveBtn').addEventListener('click', saveConfig);
+            localStorage.setItem('cuacaUltimateConfig', JSON.stringify(config));
+            closeModal('settingsModal');
+        });
 
-        // --- LOGIC: TRANSLATION ---
-        function applyLanguage() {
+        function applySettingsUI() {
+            // Apply Lang
             const t = DICTIONARY[config.lang];
-            const html = document.documentElement;
+            document.documentElement.lang = config.lang;
+            document.documentElement.dir = config.lang === 'ar' ? 'rtl' : 'ltr';
             
-            html.lang = config.lang;
-            html.dir = config.lang === 'ar' ? 'rtl' : 'ltr';
-
-            // Static Text
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const k = el.getAttribute('data-i18n');
+                if(t[k]) el.innerText = t[k];
+            });
             document.getElementById('cityInput').placeholder = t.searchPlaceholder;
-            document.getElementById('subGreetText').innerText = t.subGreet;
             document.getElementById('loaderText').innerText = t.loading;
             
-            // Update all elements with data-i18n attribute
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (t[key]) el.innerText = t[key];
-            });
+            // Apply Theme
+            if(config.theme === 'light') document.body.classList.add('theme-light');
+            else document.body.classList.remove('theme-light');
 
             updateGreeting();
             updateDate();
         }
 
-        function applyTheme() {
-            if (config.theme === 'light') document.body.classList.add('theme-light');
-            else document.body.classList.remove('theme-light');
-        }
-
         // --- WEATHER LOGIC ---
         async function refreshWeather() {
-            getWeather(config.lastLat, config.lastLon, config.lastCity);
+            applySettingsUI();
+            getWeather(config.lastLat, config.lastLon, config.defaultCity); // Use display name as stored
         }
 
-        async function searchCity() {
-            const query = document.getElementById('cityInput').value;
+        async function searchCity(queryOverride = null) {
+            const query = queryOverride || document.getElementById('cityInput').value;
             if(!query) return;
-            
             toggleLoader(true);
+            
             try {
-                // GeoCoding with Language Support
                 const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=1&language=${config.lang}&format=json`);
                 const data = await res.json();
-                
-                if(!data.results) throw new Error("Not Found");
-                
+                if(!data.results) throw new Error();
                 const loc = data.results[0];
-                config.lastCity = loc.name;
+                
                 config.lastLat = loc.latitude;
                 config.lastLon = loc.longitude;
-                localStorage.setItem('cuacaProGlobal', JSON.stringify(config));
+                config.defaultCity = loc.name; // Update display name
+                localStorage.setItem('cuacaUltimateConfig', JSON.stringify(config));
                 
                 await getWeather(loc.latitude, loc.longitude, loc.name);
             } catch(e) {
-                alert("City not found / Kota tidak ditemukan");
+                alert("Kota tidak ditemukan / City not found");
                 toggleLoader(false);
             }
         }
@@ -410,8 +439,11 @@
         async function getWeather(lat, lon, name) {
             toggleLoader(true);
             try {
-                const unitParam = config.unit === 'fahrenheit' ? 'fahrenheit' : 'celsius';
-                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto&temperature_unit=${unitParam}`;
+                // API Request with correct units
+                const tUnit = config.tempUnit === 'fahrenheit' ? 'fahrenheit' : 'celsius';
+                const wUnit = config.windUnit === 'mph' ? 'mph' : (config.windUnit === 'ms' ? 'ms' : 'kmh');
+                
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto&temperature_unit=${tUnit}&windspeed_unit=${wUnit}`;
                 
                 const res = await fetch(url);
                 const data = await res.json();
@@ -419,7 +451,6 @@
                 renderCurrent(data.current_weather, name);
                 renderHourly(data.hourly);
                 renderDaily(data.daily);
-                
                 toggleLoader(false);
             } catch(e) {
                 console.error(e);
@@ -427,58 +458,72 @@
             }
         }
 
-        // --- RENDERERS ---
         function renderCurrent(current, name) {
             const t = DICTIONARY[config.lang];
             const ui = getWeatherUI(current.weathercode);
             
             document.getElementById('cityName').innerText = name;
-            document.getElementById('currentTemp').innerText = Math.round(current.temperature) + (config.unit === 'fahrenheit' ? "°F" : "°");
+            document.getElementById('currentTemp').innerText = Math.round(current.temperature) + (config.tempUnit === 'fahrenheit' ? "°F" : "°");
             document.getElementById('weatherDesc').innerText = ui.label;
-            document.getElementById('windSpeed').innerText = Math.round(current.windspeed) + " km/h";
             
+            // Unit label
+            let wLabel = "km/h";
+            if(config.windUnit === 'mph') wLabel = "mph";
+            if(config.windUnit === 'ms') wLabel = "m/s";
+            document.getElementById('windSpeed').innerText = Math.round(current.windspeed) + " " + wLabel;
+
             const iconEl = document.getElementById('mainIcon');
             iconEl.className = `main-icon ${ui.icon}`;
-            document.getElementById('mainCardBg').style.background = ui.bg;
+            
+            // Background Logic
+            const card = document.getElementById('mainCardBg');
+            if(config.bgStyle === 'auto') card.style.background = ui.bg;
+            else if(config.bgStyle === 'blue') card.style.background = "linear-gradient(135deg,#3a7bd5 0%,#3a6073 100%)";
+            else if(config.bgStyle === 'orange') card.style.background = "linear-gradient(135deg,#fceabb 0%,#f8b500 100%)";
+            else if(config.bgStyle === 'mono') card.style.background = "linear-gradient(135deg,#757f9a 0%,#d7dde8 100%)";
 
-            // Simulate Humidity & UV (API limit)
-            document.getElementById('humidity').innerText = (40 + Math.floor(Math.random() * 40)) + "%";
-            const uv = Math.floor(Math.random() * 10);
-            document.getElementById('uvIndex').innerText = uv > 7 ? (config.lang === 'id' ? 'Tinggi' : 'High') : (config.lang === 'id' ? 'Rendah' : 'Low');
+            // Sim
+            document.getElementById('humidity').innerText = (45 + Math.floor(Math.random()*40)) + "%";
+            const uv = Math.floor(Math.random()*10);
+            document.getElementById('uvIndex').innerText = uv > 6 ? (config.lang==='id'?'Tinggi':'High') : (config.lang==='id'?'Rendah':'Low');
         }
 
         function renderHourly(hourly) {
             const list = document.getElementById('hourlyList');
             list.innerHTML = '';
-            const nowHour = new Date().getHours();
             const t = DICTIONARY[config.lang];
-
+            const nowH = new Date().getHours();
+            
             for(let i=0; i<24; i++) {
-                const idx = nowHour + i;
+                const idx = nowH + i;
                 if(idx >= hourly.time.length) break;
                 
                 const temp = Math.round(hourly.temperature_2m[idx]);
                 const code = hourly.weathercode[idx];
-                const dateObj = new Date(hourly.time[idx]);
+                const d = new Date(hourly.time[idx]);
                 
-                let timeLabel;
-                if(config.lang === 'en' || config.lang === 'id') {
-                    timeLabel = i === 0 ? t.now : dateObj.getHours() + ":00";
-                } else {
-                    // Asia/Arab simplified
-                    timeLabel = i === 0 ? t.now : dateObj.getHours() + "h";
+                let timeStr;
+                if(i === 0) timeStr = t.now;
+                else {
+                    if(config.timeFormat === '12') {
+                        let h = d.getHours();
+                        const ampm = h >= 12 ? 'PM' : 'AM';
+                        h = h % 12; 
+                        if(h===0) h=12;
+                        timeStr = h + " " + ampm;
+                    } else {
+                        timeStr = ("0" + d.getHours()).slice(-2) + ":00";
+                    }
                 }
 
                 const ui = getWeatherUI(code);
-                
-                const item = document.createElement('div');
-                item.className = `hour-card ${i===0 ? 'active' : ''}`;
-                item.innerHTML = `
-                    <div class="hour-time">${timeLabel}</div>
-                    <i class="${ui.icon} hour-icon"></i>
-                    <div class="hour-temp">${temp}°</div>
+                list.innerHTML += `
+                    <div class="hour-card ${i===0?'active':''}">
+                        <div style="font-size:0.8rem;opacity:0.8;margin-bottom:5px;white-space:nowrap">${timeStr}</div>
+                        <i class="${ui.icon}" style="font-size:1.2rem;margin-bottom:5px"></i>
+                        <div style="font-weight:700">${temp}°</div>
+                    </div>
                 `;
-                list.appendChild(item);
             }
         }
 
@@ -487,35 +532,39 @@
             list.innerHTML = '';
             const t = DICTIONARY[config.lang];
 
-            // Update Sun
-            document.getElementById('sunriseTime').innerText = daily.sunrise[0].slice(-5);
-            document.getElementById('sunsetTime').innerText = daily.sunset[0].slice(-5);
+            // Times
+            const formatTime = (iso) => {
+                if(!iso) return "--:--";
+                const d = new Date(iso);
+                if(config.timeFormat === '12') return d.toLocaleTimeString(config.lang, {hour:'numeric', minute:'2-digit'});
+                return d.toLocaleTimeString(config.lang, {hour:'2-digit', minute:'2-digit', hour12:false});
+            };
+
+            document.getElementById('sunriseTime').innerText = formatTime(daily.sunrise[0]);
+            document.getElementById('sunsetTime').innerText = formatTime(daily.sunset[0]);
 
             for(let i=0; i<7; i++) {
                 const max = Math.round(daily.temperature_2m_max[i]);
                 const min = Math.round(daily.temperature_2m_min[i]);
                 const code = daily.weathercode[i];
-                const date = new Date(daily.time[i]);
+                const d = new Date(daily.time[i]);
                 
-                // Smart Locale Day Name
-                let dayName = i === 0 ? t.today : date.toLocaleDateString(config.lang, { weekday: 'long' });
-
+                let dayName = i===0 ? t.today : d.toLocaleDateString(config.lang, {weekday:'long'});
                 const ui = getWeatherUI(code);
-                
-                const item = document.createElement('div');
-                item.className = 'day-row';
-                item.innerHTML = `
-                    <div class="day-name">${dayName}</div>
-                    <div style="flex:1;text-align:center;color:var(--primary);font-size:1.2rem"><i class="${ui.icon}"></i></div>
-                    <div class="day-temp"><span>${max}°</span> <small>${min}°</small></div>
+
+                list.innerHTML += `
+                    <div class="day-row">
+                        <div class="day-name">${dayName}</div>
+                        <div style="flex:1;text-align:center;color:var(--primary);font-size:1.2rem"><i class="${ui.icon}"></i></div>
+                        <div class="day-temp"><span>${max}°</span> <small>${min}°</small></div>
+                    </div>
                 `;
-                list.appendChild(item);
             }
         }
 
         function getWeatherUI(code) {
             const t = DICTIONARY[config.lang];
-            // 0: Clear, 1-3: Cloud, 45-48: Fog, 51+: Rain/Storm
+            // 0:Clear, 1-3:Cloud, 45-48:Fog, 51+:Rain
             if(code === 0) return { label: t.w_clear, icon: "fas fa-sun", bg: "linear-gradient(135deg, #fceabb 0%, #f8b500 100%)" };
             if([1,2,3].includes(code)) return { label: t.w_cloudy, icon: "fas fa-cloud-sun", bg: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" };
             if([45,48].includes(code)) return { label: t.w_fog, icon: "fas fa-smog", bg: "linear-gradient(135deg, #606c88 0%, #3f4c6b 100%)" };
@@ -534,54 +583,46 @@
             if(h >= 17) g = t.greetingEvening;
             if(h >= 21) g = t.greetingNight;
             document.getElementById('greetText').innerText = g;
+            document.getElementById('subGreetText').innerText = t.subGreet;
         }
 
         function updateDate() {
-            // Native Locale Date Formatting
-            const now = new Date();
-            const str = now.toLocaleDateString(config.lang, { weekday: 'short', day: 'numeric', month: 'short' });
-            document.getElementById('dateBadge').innerText = str;
+            const d = new Date();
+            document.getElementById('dateBadge').innerText = d.toLocaleDateString(config.lang, {weekday:'short', day:'numeric', month:'short'});
         }
 
         function getGeoLocation() {
-            if(!navigator.geolocation) return alert("No GPS");
+            if(!navigator.geolocation) return alert("GPS Error");
             toggleLoader(true);
             navigator.geolocation.getCurrentPosition(async pos => {
                 const lat = pos.coords.latitude;
                 const lon = pos.coords.longitude;
                 try {
-                    // Reverse Geo with language
                     const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${config.lang}`);
                     const json = await res.json();
                     const name = json.address.city || json.address.town || json.address.county;
-                    
-                    config.lastCity = name;
-                    config.lastLat = lat;
-                    config.lastLon = lon;
-                    saveConfig(); // auto save location
-                } catch(e) {
-                    refreshWeather(); // fallback
-                }
-            }, () => { toggleLoader(false); alert("Permission Denied"); });
+                    config.lastLat = lat; config.lastLon = lon; config.defaultCity = name;
+                    localStorage.setItem('cuacaUltimateConfig', JSON.stringify(config));
+                    await getWeather(lat, lon, name);
+                } catch(e) { refreshWeather(); }
+            }, () => { toggleLoader(false); alert("GPS Denied"); });
         }
 
-        function toggleLoader(show) {
-            document.getElementById('loader').style.opacity = show ? '1' : '0';
-            setTimeout(()=> document.getElementById('loader').style.display = show ? 'flex' : 'none', 300);
+        function openModal(id) { document.getElementById(id).style.display='flex'; }
+        function closeModal(id) { document.getElementById(id).style.display='none'; }
+        function toggleLoader(s) { 
+            const l = document.getElementById('loader'); 
+            l.style.opacity = s?'1':'0'; 
+            setTimeout(()=>l.style.display=s?'flex':'none',300); 
         }
 
-        function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
-        function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
-        
-        // PWA
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             const btn = document.getElementById('installBtn');
             btn.style.display = 'block';
             btn.addEventListener('click', () => { e.prompt(); btn.style.display='none'; });
         });
-        
-        document.getElementById('cityInput').addEventListener('keypress', (e) => { if(e.key==='Enter') searchCity(); });
+        document.getElementById('cityInput').addEventListener('keypress', (e)=>{ if(e.key==='Enter') searchCity(); });
     </script>
 </body>
 </html>
