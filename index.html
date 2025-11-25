@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuaca ID Dashboard</title>
+    <title>Cuaca ID Pro</title>
     <meta name="theme-color" content="#4facfe">
     
     <link rel="manifest" href="manifest.json">
@@ -14,229 +14,221 @@
     
     <style>
         :root {
-            --primary: #ffffff;
-            --glass: rgba(255, 255, 255, 0.15);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --bg-blue: linear-gradient(135deg, #1cb5e0 0%, #000851 100%);
-            --bg-rain: linear-gradient(135deg, #232526 0%, #414345 100%);
-            --bg-sunny: linear-gradient(135deg, #fceabb 0%, #f8b500 100%);
+            --glass: rgba(255, 255, 255, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --bg-default: linear-gradient(135deg, #00c6fb 0%, #005bea 100%);
+            --bg-rain: linear-gradient(135deg, #3a3e47 0%, #2b32b2 100%);
+            --bg-sun: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+            --bg-cloud: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
 
         body {
             min-height: 100vh;
-            background: var(--bg-blue);
+            background: var(--bg-default);
             color: white;
-            padding: 20px;
             display: flex; justify-content: center; align-items: flex-start;
-            transition: background 1s ease;
+            padding: 20px;
+            transition: background 0.8s ease;
         }
 
-        .dashboard {
-            width: 100%; max-width: 500px;
+        .container {
+            width: 100%; max-width: 480px;
             background: var(--glass);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            border-radius: 30px;
+            border-radius: 35px;
             padding: 25px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             margin-top: 10px;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* --- Header Section --- */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .date-time h2 { font-size: 1.8rem; font-weight: 700; }
-        .date-time p { font-size: 0.9rem; opacity: 0.8; }
-        .app-logo { font-size: 1.5rem; background: rgba(255,255,255,0.2); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        /* --- Header --- */
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .time-box h1 { font-size: 2rem; font-weight: 700; line-height: 1; }
+        .time-box p { font-size: 0.9rem; opacity: 0.9; margin-top: 5px; }
+        .logo-box { width: 45px; height: 45px; background: rgba(255,255,255,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
 
-        /* --- Search Bar --- */
-        .search-area { position: relative; display: flex; gap: 10px; margin-bottom: 20px; }
-        .search-input {
-            width: 100%; padding: 15px 20px; border-radius: 20px; border: none;
-            background: rgba(255,255,255,0.2); color: white; font-size: 1rem; outline: none;
-            transition: 0.3s;
+        /* --- Search --- */
+        .search-container { display: flex; gap: 10px; margin-bottom: 20px; }
+        .input-group { position: relative; flex: 1; }
+        .input-group input {
+            width: 100%; padding: 15px 20px; border-radius: 20px; border: none; outline: none;
+            background: rgba(255,255,255,0.25); color: white; font-size: 1rem;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); transition: 0.3s;
         }
-        .search-input::placeholder { color: rgba(255,255,255,0.6); }
-        .search-input:focus { background: rgba(255,255,255,0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .input-group input::placeholder { color: rgba(255,255,255,0.7); }
+        .input-group input:focus { background: rgba(255,255,255,0.35); }
         
-        .btn-action {
-            width: 50px; background: white; color: #333; border: none; border-radius: 18px;
-            cursor: pointer; font-size: 1.2rem; transition: 0.2s; display: flex; align-items: center; justify-content: center;
+        .btn-icon {
+            width: 50px; border: none; border-radius: 20px; background: white; color: #333;
+            font-size: 1.2rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;
         }
-        .btn-action:active { transform: scale(0.9); }
+        .btn-icon:active { transform: scale(0.95); }
 
         /* --- Shortcuts --- */
-        .shortcuts { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none; }
+        .shortcuts { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; margin-bottom: 20px; scrollbar-width: none; }
         .shortcuts::-webkit-scrollbar { display: none; }
-        .chip {
-            white-space: nowrap; padding: 8px 16px; background: rgba(0,0,0,0.2); border-radius: 20px;
-            font-size: 0.85rem; cursor: pointer; border: 1px solid transparent; transition: 0.3s;
-        }
-        .chip:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); }
-        .chip.active { background: white; color: #333; font-weight: 700; }
+        .tag { padding: 8px 16px; background: rgba(0,0,0,0.15); border-radius: 50px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; border: 1px solid transparent; transition: 0.3s; }
+        .tag:hover { background: rgba(255,255,255,0.2); }
+        .tag.active { background: white; color: #333; font-weight: 700; }
 
-        /* --- Weather Card (Main) --- */
-        .weather-card { text-align: center; margin-bottom: 25px; animation: fadeIn 0.8s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .weather-icon i { font-size: 6rem; margin: 10px 0; text-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .temp-display { font-size: 4.5rem; font-weight: 700; line-height: 1; margin-bottom: 5px; }
-        .weather-status { font-size: 1.4rem; font-weight: 500; text-transform: capitalize; margin-bottom: 5px; }
-        .location-display { font-size: 0.9rem; opacity: 0.9; background: rgba(255,255,255,0.15); padding: 5px 15px; border-radius: 15px; display: inline-block; }
+        /* --- Main Weather --- */
+        .main-weather { text-align: center; margin: 30px 0; animation: float 6s infinite ease-in-out; }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        
+        .weather-icon { font-size: 6rem; margin-bottom: 10px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); }
+        .temp { font-size: 5rem; font-weight: 700; line-height: 1; text-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .desc { font-size: 1.5rem; font-weight: 500; text-transform: capitalize; margin-top: 5px; }
+        .city-badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 15px; margin-top: 10px; font-size: 0.9rem; }
 
         /* --- Details Grid --- */
-        .details { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .detail-box {
-            background: rgba(255,255,255,0.1); padding: 15px; border-radius: 20px;
-            display: flex; align-items: center; gap: 15px; border: 1px solid rgba(255,255,255,0.05);
-        }
-        .detail-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-        .detail-info h4 { font-size: 0.75rem; opacity: 0.7; font-weight: 400; }
-        .detail-info p { font-size: 1.1rem; font-weight: 700; }
+        .grid-info { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
+        .card { background: rgba(255,255,255,0.15); padding: 15px; border-radius: 20px; display: flex; align-items: center; gap: 15px; border: 1px solid rgba(255,255,255,0.1); }
+        .card i { font-size: 1.5rem; opacity: 0.8; }
+        .card div h4 { font-size: 0.7rem; opacity: 0.7; font-weight: 400; text-transform: uppercase; }
+        .card div p { font-size: 1.1rem; font-weight: 700; }
 
-        /* --- Install Button & Loader --- */
-        #loader { display: none; text-align: center; margin: 20px 0; font-weight: 600; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+        /* --- Messages --- */
+        #loader { display: none; text-align: center; margin: 20px; font-weight: 600; }
+        #errorMsg { display: none; background: rgba(255, 71, 87, 0.9); padding: 15px; border-radius: 15px; text-align: center; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3); }
 
-        .btn-install {
-            display: none; width: 100%; padding: 15px; margin-top: 20px;
-            background: white; color: #333; border: none; border-radius: 20px;
-            font-weight: 700; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
+        /* --- Install Button --- */
+        #installBtn { display: none; width: 100%; padding: 15px; margin-top: 30px; background: white; color: #333; border: none; border-radius: 20px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
 
-        .error-msg { background: rgba(255, 71, 87, 0.8); padding: 15px; border-radius: 15px; text-align: center; display: none; margin-bottom: 20px; font-size: 0.9rem; }
+        footer { text-align: center; margin-top: 30px; font-size: 0.75rem; opacity: 0.6; }
     </style>
 </head>
 <body onload="initApp()">
 
-    <div class="dashboard">
-        <div class="header">
-            <div class="date-time">
-                <h2 id="clock">00:00</h2>
+    <div class="container">
+        <header>
+            <div class="time-box">
+                <h1 id="clock">00:00</h1>
                 <p id="date">Memuat tanggal...</p>
             </div>
-            <div class="app-logo"><i class="fas fa-cloud-sun-rain"></i></div>
-        </div>
+            <div class="logo-box"><i class="fas fa-cloud-moon"></i></div>
+        </header>
 
-        <div class="search-area">
-            <input type="text" id="cityInput" class="search-input" placeholder="Cari kota (mis: Bogor)...">
-            <button class="btn-action" onclick="searchWeather()"><i class="fas fa-search"></i></button>
-            <button class="btn-action" onclick="getGeoLocation()" style="background: rgba(255,255,255,0.25); color: white;"><i class="fas fa-location-arrow"></i></button>
+        <div class="search-container">
+            <div class="input-group">
+                <input type="text" id="cityInput" placeholder="Cari kota (cth: Pamekasan)...">
+            </div>
+            <button class="btn-icon" onclick="searchWeather()"><i class="fas fa-search"></i></button>
+            <button class="btn-icon" onclick="getGeoLocation()" style="background: rgba(255,255,255,0.3); color: white;"><i class="fas fa-location-crosshairs"></i></button>
         </div>
 
         <div class="shortcuts">
-            <div class="chip active" onclick="quickSearch('Jakarta')">Jakarta</div>
-            <div class="chip" onclick="quickSearch('Bandung')">Bandung</div>
-            <div class="chip" onclick="quickSearch('Surabaya')">Surabaya</div>
-            <div class="chip" onclick="quickSearch('Yogyakarta')">Jogja</div>
-            <div class="chip" onclick="quickSearch('Bali')">Bali</div>
-            <div class="chip" onclick="quickSearch('Medan')">Medan</div>
+            <div class="tag active" onclick="quickSearch('Jakarta')">Jakarta</div>
+            <div class="tag" onclick="quickSearch('Pamekasan')">Pamekasan</div>
+            <div class="tag" onclick="quickSearch('Surabaya')">Surabaya</div>
+            <div class="tag" onclick="quickSearch('Bandung')">Bandung</div>
+            <div class="tag" onclick="quickSearch('Makassar')">Makassar</div>
         </div>
 
-        <div id="loader">🔄 Sedang mengambil data...</div>
-        <div id="errorBox" class="error-msg"></div>
+        <div id="loader"><i class="fas fa-spinner fa-spin"></i> Mengambil data...</div>
+        <div id="errorMsg"></div>
 
         <div id="weatherContent">
-            <div class="weather-card">
-                <div class="location-display"><i class="fas fa-map-marker-alt"></i> <span id="locName">-</span></div>
-                <div class="weather-icon" id="weatherIcon"><i class="fas fa-cloud"></i></div>
-                <div class="temp-display" id="tempValue">0°</div>
-                <div class="weather-status" id="weatherDesc">Siap...</div>
-                <small style="opacity: 0.6">Update: <span id="updateTime">-</span></small>
+            <div class="main-weather">
+                <div class="weather-icon" id="icon"><i class="fas fa-cloud"></i></div>
+                <div class="temp" id="temp">0°</div>
+                <div class="desc" id="desc">Siap...</div>
+                <div class="city-badge"><i class="fas fa-map-marker-alt"></i> <span id="locName">-</span></div>
             </div>
 
-            <div class="details">
-                <div class="detail-box">
-                    <div class="detail-icon"><i class="fas fa-tint"></i></div>
-                    <div class="detail-info"><h4>Kelembapan</h4><p id="humidity">0%</p></div>
+            <div class="grid-info">
+                <div class="card">
+                    <i class="fas fa-wind"></i>
+                    <div><h4>Angin</h4><p id="wind">0 km/j</p></div>
                 </div>
-                <div class="detail-box">
-                    <div class="detail-icon"><i class="fas fa-wind"></i></div>
-                    <div class="detail-info"><h4>Angin</h4><p id="windSpeed">0 km/j</p></div>
+                <div class="card">
+                    <i class="fas fa-compass"></i>
+                    <div><h4>Arah</h4><p id="windDir">-</p></div>
                 </div>
-                <div class="detail-box">
-                    <div class="detail-icon"><i class="fas fa-eye"></i></div>
-                    <div class="detail-info"><h4>Jarak</h4><p id="visibility">0 km</p></div>
+                <div class="card">
+                    <i class="fas fa-arrows-up-down"></i>
+                    <div><h4>Elevasi</h4><p id="elevation">0 m</p></div>
                 </div>
-                <div class="detail-box">
-                    <div class="detail-icon"><i class="fas fa-compass"></i></div>
-                    <div class="detail-info"><h4>Arah</h4><p id="windDir">-</p></div>
+                <div class="card">
+                    <i class="fas fa-clock"></i>
+                    <div><h4>Zona</h4><p id="timezone">WIB</p></div>
                 </div>
             </div>
-            
-            <a href="#" id="bmkgLink" target="_blank" style="display:block; text-align:center; margin-top:20px; color:white; font-size:0.8rem; text-decoration:none; opacity:0.5;">Sumber Data: BMKG Indonesia</a>
         </div>
 
-        <button id="installBtn" class="btn-install"><i class="fas fa-download"></i> Install Aplikasi</button>
+        <button id="installBtn"><i class="fas fa-download"></i> Install App</button>
+
+        <footer>
+            Powered by Open-Meteo &copy; 2025
+        </footer>
     </div>
 
     <script>
-        // --- KONFIGURASI API ---
-        const API_URL = 'https://api.ootaizumi.web.id/lokasi/cuaca?lokasi=';
-
-        // 1. FUNGSI STARTUP (Jalan saat dibuka)
+        // --- INIT ---
         function initApp() {
-            startTime(); // Jalankan Jam
-            quickSearch('Jakarta'); // Load Default Kota
-            
-            // PWA Register
+            updateClock();
+            quickSearch('Jakarta'); // Default City
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('sw.js');
             }
         }
 
-        // 2. JAM DIGITAL
-        function startTime() {
-            const today = new Date();
-            let h = today.getHours();
-            let m = today.getMinutes();
-            h = h < 10 ? '0' + h : h;
-            m = m < 10 ? '0' + m : m;
-            document.getElementById('clock').innerHTML = h + ":" + m;
-            
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('date').innerHTML = today.toLocaleDateString('id-ID', options);
-            setTimeout(startTime, 1000);
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
+            document.getElementById('date').innerText = now.toLocaleDateString('id-ID', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'});
+            setTimeout(updateClock, 1000);
         }
 
-        // 3. PENCARIAN CEPAT (Shortcut)
+        // --- CORE LOGIC ---
         function quickSearch(city) {
             document.getElementById('cityInput').value = city;
-            // Update UI Chip active
-            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
             searchWeather();
         }
 
-        // 4. FUNGSI CARI CUACA (Main Logic)
+        document.getElementById("cityInput").addEventListener("keyup", (e) => {
+            if (e.key === "Enter") searchWeather();
+        });
+
         async function searchWeather(queryOverride = null) {
-            const inputVal = document.getElementById('cityInput').value;
-            const query = queryOverride || inputVal;
+            const city = queryOverride || document.getElementById('cityInput').value;
+            if (!city) return;
 
-            if (!query) return;
-
-            // UI State: Loading
             const loader = document.getElementById('loader');
+            const errorMsg = document.getElementById('errorMsg');
             const content = document.getElementById('weatherContent');
-            const errorBox = document.getElementById('errorBox');
-            
+
             loader.style.display = 'block';
-            content.style.opacity = '0.5';
-            errorBox.style.display = 'none';
+            errorMsg.style.display = 'none';
+            content.style.opacity = '0.3';
 
             try {
-                // Fetch Data
-                const response = await fetch(API_URL + encodeURIComponent(query));
-                const data = await response.json();
+                // 1. GEOCODING (Cari Lat/Long dari Nama Kota)
+                // Menggunakan API Open-Meteo Geocoding (Gratis)
+                const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=id&format=json`);
+                const geoData = await geoRes.json();
 
-                // Validasi Response
-                if (!data.status) {
-                    throw new Error("Kota tidak ditemukan atau server sedang sibuk.");
+                if (!geoData.results || geoData.results.length === 0) {
+                    throw new Error("Kota tidak ditemukan di database.");
                 }
 
-                // Render Data
-                renderData(data.result);
+                const location = geoData.results[0];
+                const lat = location.latitude;
+                const lon = location.longitude;
+                const name = location.name;
+                const admin = location.admin1 || location.country; // Provinsi atau Negara
+
+                // 2. WEATHER FETCH (Ambil cuaca berdasarkan Lat/Long)
+                const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&windspeed_unit=kmh&timezone=auto`);
+                const weatherData = await weatherRes.json();
+
+                renderUI(weatherData.current_weather, name, admin, location.elevation, weatherData.utc_offset_seconds);
                 
                 loader.style.display = 'none';
                 content.style.opacity = '1';
@@ -244,93 +236,93 @@
             } catch (err) {
                 loader.style.display = 'none';
                 content.style.opacity = '1';
-                errorBox.innerHTML = `⚠️ <b>Gagal:</b> ${err.message}`;
-                errorBox.style.display = 'block';
+                errorMsg.innerHTML = `⚠️ ${err.message}`;
+                errorMsg.style.display = 'block';
             }
         }
 
-        // 5. RENDER DATA KE HTML
-        function renderData(data) {
-            const w = data.cuaca;
-            const loc = data.lokasi;
+        function renderUI(data, city, admin, elevation, offset) {
+            document.getElementById('locName').innerText = `${city}, ${admin}`;
+            document.getElementById('temp').innerText = Math.round(data.temperature) + "°";
+            document.getElementById('wind').innerText = data.windspeed + " km/j";
+            document.getElementById('windDir').innerText = getWindDir(data.winddirection);
+            document.getElementById('elevation').innerText = (elevation || 10) + " mdpl";
+            
+            // Timezone logic simpel
+            const offsetHours = offset / 3600;
+            let zone = "WIB";
+            if(offsetHours === 8) zone = "WITA";
+            if(offsetHours === 9) zone = "WIT";
+            document.getElementById('timezone').innerText = zone;
 
-            document.getElementById('locName').innerText = `${data.namaTempat}, ${loc.provinsi}`;
-            document.getElementById('tempValue').innerText = w.suhu;
-            document.getElementById('weatherDesc').innerText = w.deskripsi;
-            document.getElementById('updateTime').innerText = w.waktu;
-            document.getElementById('humidity').innerText = w.kelembapan;
-            document.getElementById('windSpeed').innerText = w.angin.kecepatan;
-            document.getElementById('windDir').innerText = w.angin.dari;
-            document.getElementById('visibility').innerText = w.jarakPandang.teks;
-            document.getElementById('bmkgLink').href = data.url.bmkg;
-
-            updateIconAndTheme(w.deskripsi);
+            // WMO Code Interpretation
+            const code = data.weathercode;
+            const ui = decodeWeather(code);
+            
+            document.getElementById('desc').innerText = ui.label;
+            document.querySelector('#icon i').className = ui.icon;
+            
+            // Ganti Background
+            document.body.style.background = ui.bg;
         }
 
-        // 6. GANTI ICON & TEMA WARNA
-        function updateIconAndTheme(desc) {
-            const iconEl = document.querySelector('#weatherIcon i');
-            const d = desc.toLowerCase();
-            const body = document.body;
+        // Menerjemahkan Kode Cuaca Open-Meteo (WMO Code)
+        function decodeWeather(code) {
+            // Default
+            let res = { label: "Tidak diketahui", icon: "fas fa-question", bg: "var(--bg-default)" };
 
-            iconEl.className = 'fas'; // Reset class
-
-            // Logika Ikon & Background
-            if (d.includes('hujan') || d.includes('petir')) {
-                iconEl.classList.add(d.includes('petir') ? 'fa-bolt' : 'fa-cloud-showers-heavy');
-                body.style.background = 'var(--bg-rain)';
-            } else if (d.includes('cerah') || d.includes('panas')) {
-                iconEl.classList.add('fa-sun');
-                body.style.background = 'var(--bg-sunny)';
-            } else if (d.includes('berawan') || d.includes('mendung')) {
-                iconEl.classList.add('fa-cloud');
-                body.style.background = 'var(--bg-blue)'; // Default
-            } else {
-                iconEl.classList.add('fa-cloud-sun');
-                body.style.background = 'var(--bg-blue)';
+            if (code === 0) {
+                res = { label: "Cerah", icon: "fas fa-sun", bg: "var(--bg-sun)" };
+            } else if ([1, 2, 3].includes(code)) {
+                res = { label: "Berawan", icon: "fas fa-cloud-sun", bg: "var(--bg-cloud)" };
+            } else if ([45, 48].includes(code)) {
+                res = { label: "Kabut", icon: "fas fa-smog", bg: "var(--bg-cloud)" };
+            } else if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) {
+                res = { label: "Hujan", icon: "fas fa-cloud-showers-heavy", bg: "var(--bg-rain)" };
+            } else if ([71, 73, 75, 77].includes(code)) {
+                res = { label: "Salju", icon: "fas fa-snowflake", bg: "var(--bg-rain)" };
+            } else if ([95, 96, 99].includes(code)) {
+                res = { label: "Badai Petir", icon: "fas fa-bolt", bg: "var(--bg-rain)" };
             }
+            return res;
         }
 
-        // 7. GEOLOCATION (GPS)
+        function getWindDir(deg) {
+            const dirs = ['U', 'TL', 'T', 'TG', 'S', 'BD', 'B', 'BL'];
+            return dirs[Math.round(deg / 45) % 8];
+        }
+
+        // --- GPS Logic ---
         function getGeoLocation() {
-            const errorBox = document.getElementById('errorBox');
-            if (!navigator.geolocation) {
-                errorBox.innerText = "Browser tidak mendukung GPS.";
-                errorBox.style.display = 'block';
-                return;
-            }
-
-            document.getElementById('loader').innerText = "📍 Mencari lokasi...";
+            if (!navigator.geolocation) return alert("Browser tidak support GPS");
             document.getElementById('loader').style.display = 'block';
-
+            
             navigator.geolocation.getCurrentPosition(async (pos) => {
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+                
+                // Fetch Cuaca Langsung via Koordinat
                 try {
-                    const lat = pos.coords.latitude;
-                    const lon = pos.coords.longitude;
-                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
-                    const json = await res.json();
+                    // Cari nama kota dulu biar cantik (Reverse Geo)
+                    const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                    const geoJson = await geoRes.json();
+                    let city = geoJson.address.city || geoJson.address.town || geoJson.address.village;
+                    let admin = geoJson.address.state || "Indonesia";
                     
-                    // Ambil nama kota dari hasil GPS
-                    let city = json.address.city || json.address.town || json.address.village || json.address.county;
-                    city = city.replace(/(Kota|Kabupaten)\s/i, ''); // Bersihkan nama
-
+                    const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&windspeed_unit=kmh`);
+                    const weatherData = await weatherRes.json();
+                    
+                    renderUI(weatherData.current_weather, city, admin, 0, weatherData.utc_offset_seconds);
+                    document.getElementById('loader').style.display = 'none';
                     document.getElementById('cityInput').value = city;
-                    document.getElementById('loader').innerText = "🔄 Mengambil data cuaca...";
-                    searchWeather(city);
-
-                } catch (e) {
-                    errorBox.innerText = "Gagal mendeteksi nama kota.";
-                    errorBox.style.display = 'block';
+                } catch(e) {
+                    alert("Gagal mengambil data GPS");
                     document.getElementById('loader').style.display = 'none';
                 }
-            }, (err) => {
-                errorBox.innerHTML = "<b>Gagal GPS:</b> Pastikan HTTPS aktif dan Izin Lokasi diberikan.";
-                errorBox.style.display = 'block';
-                document.getElementById('loader').style.display = 'none';
             });
         }
 
-        // 8. LOGIKA INSTALL PWA
+        // --- Install Prompt ---
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             const btn = document.getElementById('installBtn');
@@ -339,11 +331,6 @@
                 btn.style.display = 'none';
                 e.prompt();
             });
-        });
-        
-        // Enter Key Listener
-        document.getElementById("cityInput").addEventListener("keyup", (e) => {
-            if (e.key === "Enter") searchWeather();
         });
     </script>
 </body>
